@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>520</x>
+      <y>40</y>
+      <w>900</w>
+      <h>1160</h>
+    </coordinates>
+    <panel_attributes>Real Estate Advisory System
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>120</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC01 Load Listings
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>240</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC02 Search in Natural Language
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>360</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC03 Filter by Criteria
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>480</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC04 Rank Results
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>600</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC05 View Property Details
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>720</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC06 Calculate Mortgage
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>840</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC07 Assess Affordability
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>960</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC08 Compare Properties
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>580</x>
+      <y>1080</y>
+      <w>300</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC09 Manage Shortlist
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1020</x>
+      <y>240</y>
+      <w>280</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UC10 Explain Trade-offs
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>380</x>
+      <y>500</y>
+      <w>120</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>User
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>120</x>
+      <y>280</y>
+      <w>160</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Home Buyer
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>100</x>
+      <y>720</y>
+      <w>200</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Real Estate Agent
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>1440</x>
+      <y>80</y>
+      <w>200</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;system&gt;&gt;
+Listing Data Source
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>1460</x>
+      <y>280</y>
+      <w>160</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;system&gt;&gt;
+LLM Service
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>410</y>
+      <w>270</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+fontsize=12</panel_attributes>
+    <additional_attributes>260.0;90.0;10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>630</y>
+      <w>270</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+fontsize=12</panel_attributes>
+    <additional_attributes>260.0;10.0;10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>140</y>
+      <w>160</w>
+      <h>430</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;420.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>260</y>
+      <w>160</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;300.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>380</y>
+      <w>160</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;180.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>500</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;60.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>550</y>
+      <w>160</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>550</y>
+      <w>160</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>550</y>
+      <w>160</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;320.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>550</y>
+      <w>160</w>
+      <h>450</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;440.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>550</y>
+      <w>160</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;560.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>130</y>
+      <w>620</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;20.0;610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>260</y>
+      <w>160</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>290</y>
+      <w>300</w>
+      <h>710</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;700.0;290.0;700.0;290.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1290</x>
+      <y>260</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;190.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>710</x>
+      <y>770</y>
+      <w>40</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>650</y>
+      <w>40</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extend&gt;&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

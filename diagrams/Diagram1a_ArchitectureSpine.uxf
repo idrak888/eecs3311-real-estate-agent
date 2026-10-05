@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>20</y>
+      <w>330</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>MainWindow
+--
+-service: RealEstateService
+--
++displayResults(List&lt;Listing&gt;): void
++displayCriteria(SearchCriteria): void
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>20</y>
+      <w>380</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+SearchObserver
+--
++onResultsChanged(List&lt;Listing&gt;): void
++onCriteriaChanged(SearchCriteria): void
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1230</x>
+      <y>20</y>
+      <w>300</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>CLIRenderer
+--
+-service: RealEstateService
+--
++run(): void
++renderResults(List&lt;Listing&gt;): void
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>260</y>
+      <w>560</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>RealEstateService
+--
+-repository: ListingRepository
+-agent: AdvisorAgent
+-criteria: SearchCriteria
+-strategy: RankingStrategy
+-shortlist: Shortlist
+-invoker: CommandInvoker
+-store: PreferenceStore
+-observers: List&lt;SearchObserver&gt;
+--
++loadListings(File): int
++search(SearchCriteria): List&lt;Listing&gt;
++askAgent(String): AgentResponse
++getListing(String): Listing
++calculateMortgage(String, MortgageTerms): MortgageResult
++assessAffordability(String, FinancialProfile): AffordabilityResult
++compare(List&lt;String&gt;): AgentResponse
++getShortlist(): Shortlist
++executeCommand(ShortlistCommand): void
++undo(): void
++setRankingStrategy(RankingStrategy): void
++addObserver(SearchObserver): void
+-notifyObservers(): void
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>780</y>
+      <w>360</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>PreferenceStore
+--
++saveShortlist(Shortlist): void
++loadShortlist(): Shortlist
++saveProfile(FinancialProfile): void
++loadProfile(): Optional&lt;FinancialProfile&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>780</y>
+      <w>340</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>ListingRepository
+--
+-listings: Map&lt;String, Listing&gt;
+--
++findAll(): List&lt;Listing&gt;
++findById(String): Optional&lt;Listing&gt;
++findMatching(Filter): List&lt;Listing&gt;
++count(): int
++load(List&lt;Listing&gt;): void
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>780</y>
+      <w>320</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ListingParserFactory
+--
++createParser(File): ListingParser
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>980</y>
+      <w>270</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Shortlist
+--
+-entries: List&lt;String&gt;
+--
++add(String): boolean
++remove(String): boolean
++contains(String): boolean
++size(): int
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>980</y>
+      <w>300</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+ListingParser
+--
++parse(File): List&lt;Listing&gt;
++supports(String): boolean
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>1030</y>
+      <w>300</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Listing
+--
+-id: String
+-price: double
+-bedrooms: int
+-bathrooms: int
+-squareFeet: int
+-type: PropertyType
+-neighborhood: String
+-yearBuilt: int
+-features: List&lt;String&gt;
+--
++getPricePerSqFt(): double
++getAge(int): int
++hasFeature(String): boolean
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1020</x>
+      <y>1150</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>JsonListingParser
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1270</x>
+      <y>1150</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>CsvListingParser
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>1380</y>
+      <w>200</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+PropertyType
+--
+HOUSE
+CONDO
+TOWNHOUSE
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>60</y>
+      <w>140</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1110</x>
+      <y>60</y>
+      <w>140</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>455</x>
+      <y>110</y>
+      <w>250</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;240.0;90.0;240.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>940</x>
+      <y>110</y>
+      <w>450</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>440.0;10.0;440.0;90.0;10.0;90.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>110</y>
+      <w>120</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*
+notifies
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;80.0;110.0;80.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>600</y>
+      <w>40</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>230</x>
+      <y>600</y>
+      <w>400</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>390.0;10.0;390.0;100.0;10.0;100.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>990</x>
+      <y>600</y>
+      <w>240</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+uses
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;230.0;100.0;230.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>900</y>
+      <w>40</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>1220</y>
+      <w>40</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>870</y>
+      <w>40</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>520</y>
+      <w>250</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+fontsize=12</panel_attributes>
+    <additional_attributes>240.0;10.0;110.0;10.0;110.0;505.0;10.0;505.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1110</x>
+      <y>1050</y>
+      <w>110</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>100.0;10.0;100.0;60.0;10.0;60.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1200</x>
+      <y>1050</y>
+      <w>180</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;170.0;60.0;170.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1210</x>
+      <y>830</y>
+      <w>40</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+creates
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1200</x>
+      <y>300</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Facade.
+Single entry point for
+GUI and CLI.
+Observer subject.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1430</x>
+      <y>790</y>
+      <w>180</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Factory Method
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+</diagram>

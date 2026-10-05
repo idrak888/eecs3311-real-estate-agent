@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:AdvisorAgent
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>80</y>
+      <w>20</w>
+      <h>760</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;750.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:MemoryManager
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>80</y>
+      <w>20</w>
+      <h>760</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;750.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:LLMClient
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>80</y>
+      <w>20</w>
+      <h>760</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;750.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>40</x>
+      <y>450</y>
+      <w>1020</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>alt  [grounded]
+layer=-1
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>110</y>
+      <w>260</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+explainResults(listings, criteria)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;40.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>210</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+getContext(5)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>260</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+recent turns
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>310</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+complete(prompt)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;650.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>360</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+explanation
+fontsize=12</panel_attributes>
+    <additional_attributes>650.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>400</y>
+      <w>260</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+validateGrounding(explanation, listings)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;40.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>490</y>
+      <w>260</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+attach explanation
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;40.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>40</x>
+      <y>570</y>
+      <w>1020</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+[else mentions a listing not supplied]
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;1010.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>620</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+complete(stricter prompt)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;650.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>670</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+explanation
+fontsize=12</panel_attributes>
+    <additional_attributes>650.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>710</y>
+      <w>260</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+re-validate; attach
+or omit explanation
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;40.0;10.0;40.0</additional_attributes>
+  </element>
+</diagram>

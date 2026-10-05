@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>User
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>80</y>
+      <w>20</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:MainWindow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>80</y>
+      <w>20</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:RealEstateService
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>80</y>
+      <w>20</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1020</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:SearchCriteria
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1130</x>
+      <y>80</y>
+      <w>20</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1340</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:ListingRepository
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1450</x>
+      <y>80</y>
+      <w>20</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1660</x>
+      <y>40</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>:RankingStrategy
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1770</x>
+      <y>80</y>
+      <w>20</w>
+      <h>940</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>40</x>
+      <y>210</y>
+      <w>1900</w>
+      <h>760</h>
+    </coordinates>
+    <panel_attributes>alt  [criteria valid]
+layer=-1
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>780</x>
+      <y>540</y>
+      <w>760</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>loop  [each listing]
+layer=-1
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>120</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+adjust criteria control
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>170</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+search(criteria)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>240</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+isValid()
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>290</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+true
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>350</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+toFilter()
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>400</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+filter
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>450</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+findMatching(filter)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;650.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>500</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+matches
+fontsize=12</panel_attributes>
+    <additional_attributes>650.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>570</y>
+      <w>980</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+score(listing, criteria)
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;970.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>620</y>
+      <w>980</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+score
+fontsize=12</panel_attributes>
+    <additional_attributes>970.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>700</y>
+      <w>260</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+sort by score, then by id
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;40.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>790</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+onResultsChanged(ranked)
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>840</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+updated results
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>40</x>
+      <y>880</y>
+      <w>1900</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+[else min price above max price]
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;1890.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>920</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+validation error
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>955</y>
+      <w>340</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+flag inverted range
+fontsize=12</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
