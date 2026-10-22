@@ -1,0 +1,7 @@
+id,price,bedrooms,bathrooms,squareFeet,type,neighborhood,yearBuilt,features
+X001,500000,2,1,800,condo,Downtown,2015,
+X002,abc,2,1,800,condo,Downtown,2015,
+X003,500000,2,1,800,condo,Downtown
+X004,500000,2.5,1,800,condo,Downtown,2015,
+X005,"500000,2,1,800,condo,Downtown,2015,
+X006,640000,3.0,2,1100,townhouse,Vaughan,2009,garage

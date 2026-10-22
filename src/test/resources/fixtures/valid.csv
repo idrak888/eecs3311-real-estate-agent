@@ -1,0 +1,5 @@
+id,price,bedrooms,bathrooms,squareFeet,type,neighborhood,yearBuilt,features
+C001,850000,3,2,1700,house,Maple,2005,garage;backyard
+C002,620000,2,2,950,condo,"Downtown, Core",2018,"gym;concierge"
+
+C003,710000,3,3,,townhouse,Woodbridge,2012,

@@ -1,0 +1,15 @@
+{
+  "listings": [
+    {"id": "M001", "price": 500000, "bedrooms": 2, "bathrooms": 1, "squareFeet": 800,
+     "type": "condo", "neighborhood": "Downtown", "yearBuilt": 2015},
+    {"id": "M002", "price": -1, "bedrooms": 2, "bathrooms": 1, "squareFeet": 800,
+     "type": "condo", "neighborhood": "Downtown", "yearBuilt": 2015},
+    {"id": "M003", "price": 450000, "bedrooms": 2, "bathrooms": 1,
+     "type": "castle", "neighborhood": "Downtown", "yearBuilt": 2015},
+    "not an object",
+    {"price": 400000, "bedrooms": 1, "bathrooms": 1,
+     "type": "condo", "neighborhood": "Downtown", "yearBuilt": 2015},
+    {"id": "M006", "price": 990000, "bedrooms": 4, "bathrooms": 3, "squareFeet": 2200,
+     "type": "house", "neighborhood": "Thornhill", "yearBuilt": 1998, "features": null}
+  ]
+}

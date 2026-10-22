@@ -1,0 +1,8 @@
+[
+  {"id": "T001", "price": 850000, "bedrooms": 3, "bathrooms": 2, "squareFeet": 1700,
+   "type": "house", "neighborhood": "Maple", "yearBuilt": 2005, "features": ["garage", "backyard"]},
+  {"id": "T002", "price": 620000, "bedrooms": 2, "bathrooms": 2, "squareFeet": 950,
+   "type": "CONDO", "neighborhood": "Downtown", "yearBuilt": 2018, "features": "gym;concierge"},
+  {"id": "T003", "price": 710000, "bedrooms": 3, "bathrooms": 3,
+   "type": "townhouse", "neighborhood": "Woodbridge", "yearBuilt": 2012, "features": []}
+]
