@@ -1,0 +1,21 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+config.local.json
+
+# Build output
+target/
+*.class
+
+# Runtime data written by the app
+data/user/
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.DS_Store
