@@ -1,0 +1,879 @@
+[
+  {
+    "id": "L001",
+    "price": 1159000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "squareFeet": 1057,
+    "type": "condo",
+    "neighborhood": "Downtown",
+    "yearBuilt": 2003,
+    "features": [
+      "balcony"
+    ]
+  },
+  {
+    "id": "L002",
+    "price": 807000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 645,
+    "type": "condo",
+    "neighborhood": "Liberty Village",
+    "yearBuilt": 1996,
+    "features": [
+      "parking"
+    ]
+  },
+  {
+    "id": "L003",
+    "price": 1921000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 2408,
+    "type": "house",
+    "neighborhood": "Leslieville",
+    "yearBuilt": 2008,
+    "features": [
+      "near transit"
+    ]
+  },
+  {
+    "id": "L004",
+    "price": 2026000,
+    "bedrooms": 5,
+    "bathrooms": 1,
+    "squareFeet": 2730,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 1997,
+    "features": [
+      "backyard",
+      "central air",
+      "near school",
+      "pool"
+    ]
+  },
+  {
+    "id": "L005",
+    "price": 825000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 894,
+    "type": "condo",
+    "neighborhood": "North York",
+    "yearBuilt": 2002,
+    "features": [
+      "gym"
+    ]
+  },
+  {
+    "id": "L006",
+    "price": 1497000,
+    "bedrooms": 5,
+    "bathrooms": 2,
+    "squareFeet": 2556,
+    "type": "house",
+    "neighborhood": "Scarborough",
+    "yearBuilt": 2023,
+    "features": [
+      "near school",
+      "backyard",
+      "central air"
+    ]
+  },
+  {
+    "id": "L007",
+    "price": 1370000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 2359,
+    "type": "house",
+    "neighborhood": "Etobicoke",
+    "yearBuilt": 1983,
+    "features": [
+      "renovated kitchen",
+      "near transit",
+      "fireplace",
+      "garage"
+    ]
+  },
+  {
+    "id": "L008",
+    "price": 1130000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 1422,
+    "type": "townhouse",
+    "neighborhood": "Vaughan",
+    "yearBuilt": 2020,
+    "features": [
+      "fireplace",
+      "renovated kitchen",
+      "garage",
+      "near school"
+    ]
+  },
+  {
+    "id": "L009",
+    "price": 1019000,
+    "bedrooms": 5,
+    "bathrooms": 2,
+    "squareFeet": 2067,
+    "type": "house",
+    "neighborhood": "Woodbridge",
+    "yearBuilt": 1969,
+    "features": [
+      "pool"
+    ]
+  },
+  {
+    "id": "L010",
+    "price": 737000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 651,
+    "type": "condo",
+    "neighborhood": "Richmond Hill",
+    "yearBuilt": 1997,
+    "features": [
+      "in-suite laundry",
+      "balcony",
+      "rooftop terrace",
+      "pool"
+    ]
+  },
+  {
+    "id": "L011",
+    "price": 1472000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 2687,
+    "type": "house",
+    "neighborhood": "Markham",
+    "yearBuilt": 1979,
+    "features": [
+      "central air",
+      "finished basement",
+      "near school"
+    ]
+  },
+  {
+    "id": "L012",
+    "price": 844000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1469,
+    "type": "house",
+    "neighborhood": "Mississauga",
+    "yearBuilt": 1978,
+    "features": [
+      "deck",
+      "renovated kitchen",
+      "central air"
+    ]
+  },
+  {
+    "id": "L013",
+    "price": 1729000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 1185,
+    "type": "condo",
+    "neighborhood": "Downtown",
+    "yearBuilt": 2017,
+    "features": [
+      "in-suite laundry",
+      "concierge",
+      "rooftop terrace",
+      "pet friendly"
+    ]
+  },
+  {
+    "id": "L014",
+    "price": 820000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "type": "condo",
+    "neighborhood": "Liberty Village",
+    "yearBuilt": 1996,
+    "features": [
+      "pet friendly",
+      "in-suite laundry"
+    ]
+  },
+  {
+    "id": "L015",
+    "price": 1364000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "squareFeet": 1905,
+    "type": "house",
+    "neighborhood": "Leslieville",
+    "yearBuilt": 1966,
+    "features": [
+      "renovated kitchen",
+      "garage",
+      "near transit",
+      "central air"
+    ]
+  },
+  {
+    "id": "L016",
+    "price": 2560000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "squareFeet": 3440,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 2004,
+    "features": [
+      "near school"
+    ]
+  },
+  {
+    "id": "L017",
+    "price": 829000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "squareFeet": 1020,
+    "type": "condo",
+    "neighborhood": "North York",
+    "yearBuilt": 2007,
+    "features": [
+      "pet friendly",
+      "concierge",
+      "pool",
+      "in-suite laundry"
+    ]
+  },
+  {
+    "id": "L018",
+    "price": 672000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 1219,
+    "type": "house",
+    "neighborhood": "Scarborough",
+    "yearBuilt": 2008,
+    "features": [
+      "near transit",
+      "pool",
+      "backyard"
+    ]
+  },
+  {
+    "id": "L019",
+    "price": 863000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1296,
+    "type": "house",
+    "neighborhood": "Etobicoke",
+    "yearBuilt": 1983,
+    "features": [
+      "finished basement",
+      "backyard",
+      "near transit"
+    ]
+  },
+  {
+    "id": "L020",
+    "price": 730000,
+    "bedrooms": 4,
+    "bathrooms": 1,
+    "squareFeet": 1357,
+    "type": "house",
+    "neighborhood": "Vaughan",
+    "yearBuilt": 1985,
+    "features": [
+      "near school",
+      "finished basement",
+      "fireplace",
+      "deck"
+    ]
+  },
+  {
+    "id": "L021",
+    "price": 1091000,
+    "bedrooms": 2,
+    "bathrooms": 4,
+    "squareFeet": 2160,
+    "type": "house",
+    "neighborhood": "Woodbridge",
+    "yearBuilt": 2016,
+    "features": [
+      "renovated kitchen"
+    ]
+  },
+  {
+    "id": "L022",
+    "price": 784000,
+    "bedrooms": 2,
+    "bathrooms": 4,
+    "squareFeet": 1239,
+    "type": "house",
+    "neighborhood": "Richmond Hill",
+    "yearBuilt": 1997,
+    "features": [
+      "finished basement"
+    ]
+  },
+  {
+    "id": "L023",
+    "price": 1481000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1913,
+    "type": "townhouse",
+    "neighborhood": "Markham",
+    "yearBuilt": 1977,
+    "features": [
+      "garage",
+      "near transit",
+      "near school"
+    ]
+  },
+  {
+    "id": "L024",
+    "price": 1071000,
+    "bedrooms": 3,
+    "bathrooms": 1,
+    "squareFeet": 2298,
+    "type": "house",
+    "neighborhood": "Mississauga",
+    "yearBuilt": 2019,
+    "features": [
+      "deck",
+      "garage"
+    ]
+  },
+  {
+    "id": "L025",
+    "price": 1515000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 1502,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 1987,
+    "features": [
+      "garage",
+      "central air",
+      "renovated kitchen",
+      "deck"
+    ]
+  },
+  {
+    "id": "L026",
+    "price": 3335000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 3286,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 2024,
+    "features": [
+      "pool",
+      "near school",
+      "backyard"
+    ]
+  },
+  {
+    "id": "L027",
+    "price": 1985000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 2166,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 2024,
+    "features": [
+      "finished basement",
+      "backyard"
+    ]
+  },
+  {
+    "id": "L028",
+    "price": 1629000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "squareFeet": 1276,
+    "type": "condo",
+    "neighborhood": "Downtown",
+    "yearBuilt": 2018,
+    "features": [
+      "concierge",
+      "parking",
+      "gym",
+      "rooftop terrace"
+    ]
+  },
+  {
+    "id": "L029",
+    "price": 751000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1523,
+    "type": "house",
+    "neighborhood": "Scarborough",
+    "yearBuilt": 2008,
+    "features": [
+      "backyard",
+      "near transit",
+      "pool"
+    ]
+  },
+  {
+    "id": "L030",
+    "price": 1019000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 1550,
+    "type": "house",
+    "neighborhood": "Woodbridge",
+    "yearBuilt": 1998,
+    "features": [
+      "garage"
+    ]
+  },
+  {
+    "id": "L031",
+    "price": 1427000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 953,
+    "type": "condo",
+    "neighborhood": "Downtown",
+    "yearBuilt": 2012,
+    "features": [
+      "in-suite laundry"
+    ]
+  },
+  {
+    "id": "L032",
+    "price": 906000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "squareFeet": 1204,
+    "type": "condo",
+    "neighborhood": "Etobicoke",
+    "yearBuilt": 1996,
+    "features": [
+      "gym",
+      "pool",
+      "near transit",
+      "locker"
+    ]
+  },
+  {
+    "id": "L033",
+    "price": 875000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "squareFeet": 1102,
+    "type": "townhouse",
+    "neighborhood": "Richmond Hill",
+    "yearBuilt": 1973,
+    "features": [
+      "near school",
+      "small yard",
+      "rooftop terrace"
+    ]
+  },
+  {
+    "id": "L034",
+    "price": 661000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "squareFeet": 586,
+    "type": "condo",
+    "neighborhood": "Liberty Village",
+    "yearBuilt": 2010,
+    "features": [
+      "gym",
+      "pet friendly"
+    ]
+  },
+  {
+    "id": "L035",
+    "price": 2278000,
+    "bedrooms": 3,
+    "bathrooms": 1,
+    "squareFeet": 3091,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 1979,
+    "features": [
+      "finished basement",
+      "deck"
+    ]
+  },
+  {
+    "id": "L036",
+    "price": 910000,
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "squareFeet": 1506,
+    "type": "house",
+    "neighborhood": "Vaughan",
+    "yearBuilt": 1980,
+    "features": [
+      "backyard"
+    ]
+  },
+  {
+    "id": "L037",
+    "price": 1667000,
+    "bedrooms": 3,
+    "bathrooms": 1,
+    "squareFeet": 1249,
+    "type": "condo",
+    "neighborhood": "The Annex",
+    "yearBuilt": 1991,
+    "features": [
+      "pool",
+      "rooftop terrace",
+      "parking"
+    ]
+  },
+  {
+    "id": "L038",
+    "price": 760000,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "type": "townhouse",
+    "neighborhood": "Mississauga",
+    "yearBuilt": 2006,
+    "features": [
+      "near transit",
+      "renovated kitchen",
+      "garage"
+    ]
+  },
+  {
+    "id": "L039",
+    "price": 1204000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1846,
+    "type": "townhouse",
+    "neighborhood": "Etobicoke",
+    "yearBuilt": 2014,
+    "features": [
+      "fireplace",
+      "near school"
+    ]
+  },
+  {
+    "id": "L040",
+    "price": 807000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "squareFeet": 1288,
+    "type": "townhouse",
+    "neighborhood": "Richmond Hill",
+    "yearBuilt": 1982,
+    "features": [
+      "central air",
+      "renovated kitchen",
+      "near school"
+    ]
+  },
+  {
+    "id": "L041",
+    "price": 1286000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 2080,
+    "type": "townhouse",
+    "neighborhood": "Scarborough",
+    "yearBuilt": 1987,
+    "features": [
+      "rooftop terrace",
+      "central air",
+      "fireplace"
+    ]
+  },
+  {
+    "id": "L042",
+    "price": 522000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 521,
+    "type": "condo",
+    "neighborhood": "Etobicoke",
+    "yearBuilt": 2012,
+    "features": [
+      "in-suite laundry",
+      "balcony",
+      "pet friendly"
+    ]
+  },
+  {
+    "id": "L043",
+    "price": 1088000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "squareFeet": 925,
+    "type": "condo",
+    "neighborhood": "Downtown",
+    "yearBuilt": 2004,
+    "features": [
+      "rooftop terrace",
+      "in-suite laundry",
+      "balcony"
+    ]
+  },
+  {
+    "id": "L044",
+    "price": 1718000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "squareFeet": 1329,
+    "type": "condo",
+    "neighborhood": "Leslieville",
+    "yearBuilt": 2001,
+    "features": [
+      "rooftop terrace",
+      "balcony",
+      "near transit"
+    ]
+  },
+  {
+    "id": "L045",
+    "price": 1053000,
+    "bedrooms": 2,
+    "bathrooms": 3,
+    "squareFeet": 1481,
+    "type": "house",
+    "neighborhood": "Markham",
+    "yearBuilt": 1988,
+    "features": [
+      "pool",
+      "central air",
+      "near transit",
+      "backyard"
+    ]
+  },
+  {
+    "id": "L046",
+    "price": 2282000,
+    "bedrooms": 4,
+    "bathrooms": 1,
+    "squareFeet": 3225,
+    "type": "house",
+    "neighborhood": "Vaughan",
+    "yearBuilt": 1984,
+    "features": [
+      "deck",
+      "central air",
+      "fireplace",
+      "garage"
+    ]
+  },
+  {
+    "id": "L047",
+    "price": 1659000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "squareFeet": 1265,
+    "type": "condo",
+    "neighborhood": "Liberty Village",
+    "yearBuilt": 2020,
+    "features": [
+      "rooftop terrace",
+      "parking",
+      "pet friendly",
+      "pool"
+    ]
+  },
+  {
+    "id": "L048",
+    "price": 2185000,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "squareFeet": 3223,
+    "type": "house",
+    "neighborhood": "Markham",
+    "yearBuilt": 1993,
+    "features": [
+      "pool",
+      "renovated kitchen"
+    ]
+  },
+  {
+    "id": "L049",
+    "price": 1118000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 1669,
+    "type": "townhouse",
+    "neighborhood": "Woodbridge",
+    "yearBuilt": 1979,
+    "features": [
+      "near transit",
+      "near school",
+      "renovated kitchen"
+    ]
+  },
+  {
+    "id": "L050",
+    "price": 1730000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 1074,
+    "type": "condo",
+    "neighborhood": "The Annex",
+    "yearBuilt": 2022,
+    "features": [
+      "balcony",
+      "parking",
+      "concierge"
+    ]
+  },
+  {
+    "id": "L051",
+    "price": 1462000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "squareFeet": 1172,
+    "type": "condo",
+    "neighborhood": "Leslieville",
+    "yearBuilt": 2019,
+    "features": [
+      "locker",
+      "concierge"
+    ]
+  },
+  {
+    "id": "L052",
+    "price": 1504000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 2030,
+    "type": "townhouse",
+    "neighborhood": "Woodbridge",
+    "yearBuilt": 1999,
+    "features": [
+      "near school"
+    ]
+  },
+  {
+    "id": "L053",
+    "price": 841000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "type": "condo",
+    "neighborhood": "The Annex",
+    "yearBuilt": 1991,
+    "features": [
+      "in-suite laundry",
+      "gym",
+      "pool"
+    ]
+  },
+  {
+    "id": "L054",
+    "price": 1768000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1688,
+    "type": "house",
+    "neighborhood": "The Annex",
+    "yearBuilt": 2023,
+    "features": [
+      "deck",
+      "central air",
+      "garage",
+      "renovated kitchen"
+    ]
+  },
+  {
+    "id": "L055",
+    "price": 1506000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 2815,
+    "type": "house",
+    "neighborhood": "Richmond Hill",
+    "yearBuilt": 1972,
+    "features": [
+      "deck",
+      "finished basement",
+      "fireplace"
+    ]
+  },
+  {
+    "id": "L056",
+    "price": 1059000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1031,
+    "type": "condo",
+    "neighborhood": "Richmond Hill",
+    "yearBuilt": 1992,
+    "features": [
+      "parking"
+    ]
+  },
+  {
+    "id": "L057",
+    "price": 1205000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 1137,
+    "type": "condo",
+    "neighborhood": "North York",
+    "yearBuilt": 2008,
+    "features": [
+      "pool",
+      "locker",
+      "gym",
+      "parking"
+    ]
+  },
+  {
+    "id": "L058",
+    "price": 389000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "squareFeet": 453,
+    "type": "condo",
+    "neighborhood": "North York",
+    "yearBuilt": 2018,
+    "features": [
+      "gym"
+    ]
+  },
+  {
+    "id": "L059",
+    "price": 1593000,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "squareFeet": 2818,
+    "type": "house",
+    "neighborhood": "Scarborough",
+    "yearBuilt": 1969,
+    "features": [
+      "near school",
+      "fireplace"
+    ]
+  },
+  {
+    "id": "L060",
+    "price": 1478000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 2492,
+    "type": "house",
+    "neighborhood": "Mississauga",
+    "yearBuilt": 1973,
+    "features": [
+      "near transit",
+      "garage",
+      "central air",
+      "near school"
+    ]
+  }
+]

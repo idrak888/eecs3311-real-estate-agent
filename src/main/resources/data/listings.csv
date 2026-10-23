@@ -1,0 +1,61 @@
+id,price,bedrooms,bathrooms,squareFeet,type,neighborhood,yearBuilt,features
+L001,1159000,0,1,1057,condo,Downtown,2003,balcony
+L002,807000,2,2,645,condo,Liberty Village,1996,parking
+L003,1921000,4,2,2408,house,Leslieville,2008,near transit
+L004,2026000,5,1,2730,house,The Annex,1997,backyard;central air;near school;pool
+L005,825000,2,1,894,condo,North York,2002,gym
+L006,1497000,5,2,2556,house,Scarborough,2023,near school;backyard;central air
+L007,1370000,4,2,2359,house,Etobicoke,1983,renovated kitchen;near transit;fireplace;garage
+L008,1130000,4,2,1422,townhouse,Vaughan,2020,fireplace;renovated kitchen;garage;near school
+L009,1019000,5,2,2067,house,Woodbridge,1969,pool
+L010,737000,2,1,651,condo,Richmond Hill,1997,in-suite laundry;balcony;rooftop terrace;pool
+L011,1472000,2,2,2687,house,Markham,1979,central air;finished basement;near school
+L012,844000,3,2,1469,house,Mississauga,1978,deck;renovated kitchen;central air
+L013,1729000,2,1,1185,condo,Downtown,2017,in-suite laundry;concierge;rooftop terrace;pet friendly
+L014,820000,2,2,,condo,Liberty Village,1996,pet friendly;in-suite laundry
+L015,1364000,3,3,1905,house,Leslieville,1966,renovated kitchen;garage;near transit;central air
+L016,2560000,3,3,3440,house,The Annex,2004,near school
+L017,829000,0,1,1020,condo,North York,2007,pet friendly;concierge;pool;in-suite laundry
+L018,672000,4,2,1219,house,Scarborough,2008,near transit;pool;backyard
+L019,863000,3,2,1296,house,Etobicoke,1983,finished basement;backyard;near transit
+L020,730000,4,1,1357,house,Vaughan,1985,near school;finished basement;fireplace;deck
+L021,1091000,2,4,2160,house,Woodbridge,2016,renovated kitchen
+L022,784000,2,4,1239,house,Richmond Hill,1997,finished basement
+L023,1481000,3,2,1913,townhouse,Markham,1977,garage;near transit;near school
+L024,1071000,3,1,2298,house,Mississauga,2019,deck;garage
+L025,1515000,4,2,1502,house,The Annex,1987,garage;central air;renovated kitchen;deck
+L026,3335000,4,2,3286,house,The Annex,2024,pool;near school;backyard
+L027,1985000,4,2,2166,house,The Annex,2024,finished basement;backyard
+L028,1629000,1,1,1276,condo,Downtown,2018,concierge;parking;gym;rooftop terrace
+L029,751000,3,2,1523,house,Scarborough,2008,backyard;near transit;pool
+L030,1019000,2,1,1550,house,Woodbridge,1998,garage
+L031,1427000,2,1,953,condo,Downtown,2012,in-suite laundry
+L032,906000,1,1,1204,condo,Etobicoke,1996,gym;pool;near transit;locker
+L033,875000,3,3,1102,townhouse,Richmond Hill,1973,near school;small yard;rooftop terrace
+L034,661000,1,1,586,condo,Liberty Village,2010,gym;pet friendly
+L035,2278000,3,1,3091,house,The Annex,1979,finished basement;deck
+L036,910000,3,4,1506,house,Vaughan,1980,backyard
+L037,1667000,3,1,1249,condo,The Annex,1991,pool;rooftop terrace;parking
+L038,760000,4,3,,townhouse,Mississauga,2006,near transit;renovated kitchen;garage
+L039,1204000,3,2,1846,townhouse,Etobicoke,2014,fireplace;near school
+L040,807000,3,3,1288,townhouse,Richmond Hill,1982,central air;renovated kitchen;near school
+L041,1286000,4,2,2080,townhouse,Scarborough,1987,rooftop terrace;central air;fireplace
+L042,522000,2,2,521,condo,Etobicoke,2012,in-suite laundry;balcony;pet friendly
+L043,1088000,1,1,925,condo,Downtown,2004,rooftop terrace;in-suite laundry;balcony
+L044,1718000,0,1,1329,condo,Leslieville,2001,rooftop terrace;balcony;near transit
+L045,1053000,2,3,1481,house,Markham,1988,pool;central air;near transit;backyard
+L046,2282000,4,1,3225,house,Vaughan,1984,deck;central air;fireplace;garage
+L047,1659000,0,1,1265,condo,Liberty Village,2020,rooftop terrace;parking;pet friendly;pool
+L048,2185000,4,3,3223,house,Markham,1993,pool;renovated kitchen
+L049,1118000,4,2,1669,townhouse,Woodbridge,1979,near transit;near school;renovated kitchen
+L050,1730000,2,2,1074,condo,The Annex,2022,balcony;parking;concierge
+L051,1462000,1,1,1172,condo,Leslieville,2019,locker;concierge
+L052,1504000,2,2,2030,townhouse,Woodbridge,1999,near school
+L053,841000,0,1,,condo,The Annex,1991,in-suite laundry;gym;pool
+L054,1768000,3,2,1688,house,The Annex,2023,deck;central air;garage;renovated kitchen
+L055,1506000,3,2,2815,house,Richmond Hill,1972,deck;finished basement;fireplace
+L056,1059000,3,2,1031,condo,Richmond Hill,1992,parking
+L057,1205000,2,2,1137,condo,North York,2008,pool;locker;gym;parking
+L058,389000,0,1,453,condo,North York,2018,gym
+L059,1593000,4,2,2818,house,Scarborough,1969,near school;fireplace
+L060,1478000,2,1,2492,house,Mississauga,1973,near transit;garage;central air;near school
