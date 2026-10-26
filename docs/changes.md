@@ -16,3 +16,19 @@ Format: Original design -> Implemented change -> Reason -> Impact
   once and reported in the load summary rather than silently overwritten.
 - **Listing.getPricePerSqFt()** -> returns NaN with `hasSquareFeet()` when size is unknown ->
   Stage 1 required "unavailable" rather than zero or infinity.
+- **Composite leaf filters** -> added `BathroomFilter` and `NeighborhoodFilter` -> Stage 1
+  `SearchCriteria` carried `minBathrooms` and `neighborhoods`, but no leaf filter evaluated
+  them, so those criteria would have been silently ignored -> two new leaves in Diagram 1b.
+- **AndFilter / OrFilter** -> share an abstract `CompositeFilter` base holding the child list
+  -> removes duplicated `add()`/children code; `Filter` gains `describe()` for readable
+  criteria summaries (CLI output, zero-match explanation) -> one abstract class added between
+  `Filter` and the two composites in Diagram 1b.
+- **SearchCriteriaBuilder** -> Stage 1 listed `withMaxPrice`, `withMinBedrooms`, `withType`,
+  `withFeature`; implemented builder also has `withMinPrice`, `withMinBathrooms`,
+  `withNeighborhood`, `from(SearchCriteria)` and `clear*()` -> every `SearchCriteria` field must
+  be settable from GUI controls, CLI flags and LLM output, and the GUI edits one field of the
+  session criteria at a time -> more builder methods in Diagram 1b; no structural change.
+- **SearchCriteria** -> added `validationErrors()`, `isEmpty()`, `describe()` and `empty()`
+  alongside `isValid()`, `toFilter()`, `merge()` -> F03 must say why a search did not run
+  (e.g. inverted price range), not just that it was invalid; `toFilter()` refuses invalid
+  criteria -> additional methods in Diagram 1b.

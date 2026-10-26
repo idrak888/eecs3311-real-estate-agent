@@ -33,7 +33,8 @@ cp .env.example .env
 
 ```
 src/main/java/ca/yorku/realestate/
-  domain/        Listing, PropertyType (deterministic domain model)
+  domain/        Listing, PropertyType, SearchCriteria, SearchCriteriaBuilder
+    filter/      Filter (Composite): And/Or + price, bed, bath, type, neighborhood, feature
   persistence/   ListingRepository, ListingImporter, LoadSummary
     parser/      ListingParser (Factory Method): JSON and CSV parsers
 src/main/resources/data/
