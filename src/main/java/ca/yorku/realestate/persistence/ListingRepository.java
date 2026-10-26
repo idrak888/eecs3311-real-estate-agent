@@ -1,6 +1,7 @@
 package ca.yorku.realestate.persistence;
 
 import ca.yorku.realestate.domain.Listing;
+import ca.yorku.realestate.domain.filter.Filter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -45,6 +46,25 @@ public class ListingRepository {
             return Optional.empty();
         }
         return Optional.ofNullable(listings.get(id.trim()));
+    }
+
+    /**
+     * Listings satisfying the filter, in load order. The repository calls {@code matches} on the
+     * root only; a composite filter recurses into its own children.
+     *
+     * @throws IllegalArgumentException if the filter is null
+     */
+    public List<Listing> findMatching(Filter filter) {
+        if (filter == null) {
+            throw new IllegalArgumentException("filter must not be null");
+        }
+        List<Listing> result = new ArrayList<>();
+        for (Listing listing : listings.values()) {
+            if (filter.matches(listing)) {
+                result.add(listing);
+            }
+        }
+        return result;
     }
 
     public int count() {

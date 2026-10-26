@@ -1,10 +1,13 @@
 package ca.yorku.realestate.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ca.yorku.realestate.domain.Listing;
 import ca.yorku.realestate.domain.PropertyType;
+import ca.yorku.realestate.domain.filter.AndFilter;
+import ca.yorku.realestate.domain.filter.PriceFilter;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -72,5 +75,25 @@ class ListingRepositoryTest {
         List<Listing> snapshot = repo.findAll();
         repo.load(List.of());
         assertEquals(1, snapshot.size());
+    }
+
+    @Test
+    void findMatchingReturnsMatchesInLoadOrder() {
+        ListingRepository repo = new ListingRepository();
+        repo.load(List.of(listing("A", 900), listing("B", 100), listing("C", 500)));
+        assertEquals(List.of("B", "C"),
+                repo.findMatching(new PriceFilter(null, 500.0)).stream().map(Listing::getId).toList());
+    }
+
+    @Test
+    void findMatchingWithEmptyAndReturnsEverything() {
+        ListingRepository repo = new ListingRepository();
+        repo.load(List.of(listing("A", 1), listing("B", 2)));
+        assertEquals(2, repo.findMatching(new AndFilter()).size());
+    }
+
+    @Test
+    void findMatchingRejectsNullFilter() {
+        assertThrows(IllegalArgumentException.class, () -> new ListingRepository().findMatching(null));
     }
 }
