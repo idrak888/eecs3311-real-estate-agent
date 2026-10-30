@@ -32,3 +32,22 @@ Format: Original design -> Implemented change -> Reason -> Impact
   alongside `isValid()`, `toFilter()`, `merge()` -> F03 must say why a search did not run
   (e.g. inverted price range), not just that it was invalid; `toFilter()` refuses invalid
   criteria -> additional methods in Diagram 1b.
+- **RankingStrategy** -> added a default `rank(List<Listing>, SearchCriteria)` alongside
+  `score()` and `getName()` -> the sort (descending score, ties by ID) is identical for every
+  strategy, so it lives once in the interface rather than in the service -> one extra method
+  on the interface in Diagram 1b; `RealEstateService` will call `rank()`.
+- **BestMatchStrategy scoring** -> average per-criterion satisfaction in [0, 1] with partial
+  credit for near misses -> Stage 1 said "best match to criteria" without defining it; partial
+  credit keeps the ranking meaningful on relaxed or unfiltered results -> no diagram change.
+- **MortgageCalculator** -> added `calculate(price, terms)` returning a `MortgageResult`, and
+  `monthlyHousingCost()` -> the service needs all F06 outputs in one call, and F07 needs the
+  housing cost figure -> two extra methods in Diagram 1c.
+- **MortgageTerms** -> added `defaultsFor(price)` (20% down, 5.0%, 25 years) -> F05 shows a
+  payment "at default terms" and F06 says unspecified parameters take configured defaults ->
+  one static method.
+- **AffordabilityResult** -> added `monthlyHousingCost`, `debtLimited` and `explanation` to
+  verdict, GDS, TDS and max price -> F07 must flag "debt alone exceeds thresholds"
+  specifically and the GUI/CLI need a readable reason -> three fields in Diagram 1c.
+- **Affordability thresholds (decision)** -> GDS 39%, TDS 44%, marginal = within 3 percentage
+  points below either; housing cost = payment + 1%/year property tax + $100/month heating ->
+  Stage 1 said "standard thresholds" without numbers.
