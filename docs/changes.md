@@ -51,3 +51,28 @@ Format: Original design -> Implemented change -> Reason -> Impact
 - **Affordability thresholds (decision)** -> GDS 39%, TDS 44%, marginal = within 3 percentage
   points below either; housing cost = payment + 1%/year property tax + $100/month heating ->
   Stage 1 said "standard thresholds" without numbers.
+- **ShortlistCommand** -> added `changedState()`; `CommandInvoker.undo()` returns
+  `Optional<ShortlistCommand>` instead of void, and gained `peekUndoDescription()` -> a no-op
+  (adding a duplicate) must not land on the undo stack, and "nothing to undo" must be reported
+  -> one method on the interface, changed return type in Diagram 1c.
+- **RemoveFromShortlist.undo()** -> restores the entry at its original position -> undo should
+  leave the shortlist exactly as it was, including order.
+- **PreferenceStore** -> load methods throw `IOException` for a corrupt file (missing file =
+  empty); writes go through a temp file then move -> F09 requires warning the user on
+  persistence problems rather than silently losing data.
+- **RealEstateService.loadListings** -> returns `LoadSummary` instead of `int` -> F01 must
+  report rejected records, not just a count.
+- **RealEstateService.getListing** -> returns `Optional<Listing>` -> F05 reports "no such
+  listing" for unknown IDs; matches the Stage 1 realization text.
+- **RealEstateService additions** -> `refine()`, `restoreSession()`, `setFinancialProfile()`,
+  `addToShortlist()` / `removeFromShortlist()` conveniences, `getShortlistedListings()`,
+  `canUndo()`; `NoSuchListingException` and `InvalidCriteriaException` -> the frontends need
+  these and should not build commands or merge criteria themselves -> extra facade methods.
+- **SearchObserver** -> added default methods `onShortlistChanged()` and `onWarning()` ->
+  F09 says observers update the shortlist panel, and persistence warnings must reach the UI.
+- **LLMClient adapter** -> `AnthropicLLMClient` takes an injectable `Transport` and counts
+  input/output tokens; new `EnvConfig` reads `.env`; new `LLMException` -> HTTP can be faked in
+  unit tests, and real token totals feed the AI usage log -> helper types beside Diagram 2a.
+- **RequirementExtractor** -> added `withVocabulary(neighborhoods, features)`; throws
+  `ExtractionException` after the retry -> prompt lists the data set's real neighborhood and
+  feature names so extracted criteria actually match listings.

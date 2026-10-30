@@ -27,7 +27,9 @@ cp .env.example .env
 # then edit .env and replace YOUR_LOCAL_API_KEY_HERE
 ```
 
-`.env` is listed in `.gitignore`.
+`.env` is listed in `.gitignore`. Unit tests never call the real API (they use
+`MockLLMClient`), so `mvn test` works without a key. The shortlist and financial profile are
+saved under `data/user/`, which is also git-ignored.
 
 ## Project layout
 
@@ -37,7 +39,12 @@ src/main/java/ca/yorku/realestate/
     filter/      Filter (Composite): And/Or + price, bed, bath, type, neighborhood, feature
     ranking/     RankingStrategy (Strategy): price asc/desc, value per sq ft, best match
     finance/     MortgageCalculator, MortgageTerms/Result, FinancialProfile, AffordabilityResult
-  persistence/   ListingRepository, ListingImporter, LoadSummary
+    shortlist/   Shortlist, ShortlistCommand (Command), CommandInvoker (undo)
+  service/       RealEstateService (Facade), SearchObserver (Observer)
+  agent/         RequirementExtractor (natural language -> SearchCriteria)
+    llm/         LLMClient (Adapter): AnthropicLLMClient, MockLLMClient
+  config/        EnvConfig (.env loading)
+  persistence/   ListingRepository, ListingImporter, LoadSummary, PreferenceStore
     parser/      ListingParser (Factory Method): JSON and CSV parsers
 src/main/resources/data/
   listings.json  60 sample listings (same data also as listings.csv)
