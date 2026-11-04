@@ -9,6 +9,7 @@ Running log for report Section 5. Add a row per session.
 | 2026-10-26 | Claude (claude.ai) | Claude Opus 5.5 | F03: Composite filters (Filter, And/OrFilter, 6 leaves), ListingRepository.findMatching; F02/F03: SearchCriteria + SearchCriteriaBuilder (Builder), merge, validation; tests | | |
 | 2026-10-30 | Claude (claude.ai) | Claude Opus 5.5 | F04: RankingStrategy + 4 strategies (Strategy); F06: MortgageCalculator, MortgageTerms, MortgageResult; F07: assess, maxSupportablePrice, FinancialProfile, AffordabilityResult, Verdict; tests | | |
 | 2026-10-30 | Claude (claude.ai) | Claude Opus 5.5 | F09: Shortlist + Command classes; PreferenceStore; RealEstateService facade + SearchObserver; LLMClient/MockLLMClient/AnthropicLLMClient (Adapter) + EnvConfig; F02: RequirementExtractor; tests | | |
+| 2026-11-04 | Claude (claude.ai) | Claude Opus 5.5 | F02/F10: MemoryManager; tool framework + SearchTool/MortgageTool; F08: ComparisonTool; AdvisorAgent (LLM tool selection, grounding check, regeneration); facade askAgent/compare; soft-preference fix; tests | | |
 
 ## Representative interactions
 
@@ -24,3 +25,10 @@ Running log for report Section 5. Add a row per session.
 - 2026-10-30: Reviewing a generated service test found an assertion that could never fail
   (`results.containsAll(results)`). Replaced it with a check that re-ranking keeps the same
   listings and orders them by price.
+- 2026-10-31: Ran the first live API call (LlmConnectionCheck): "3 bedroom house under 1.5M
+  with a garage, maybe in Vaughan or Woodbridge" extracted correctly but matched 0 of 60,
+  because "maybe" became a hard neighborhood filter. Decided hedged wishes should rank, not
+  filter; implemented as preferences in the extractor schema and best-match ranking (Nov 4).
+- 2026-11-04: Chose to keep all mortgage figures out of generated text: the agent formats
+  payment, interest and verdict in code from MortgageCalculator output, and the model is only
+  used for tool choice and trade-off explanations, which are checked for invented listing IDs.

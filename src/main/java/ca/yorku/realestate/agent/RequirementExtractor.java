@@ -26,6 +26,9 @@ import java.util.TreeSet;
  *
  * <p>When known neighborhoods and features are supplied, they are listed in the prompt so the
  * model maps phrases like "near downtown" onto values that exist in the data set.
+ *
+ * <p>Hedged wishes ("maybe in Vaughan", "ideally a pool") are extracted separately as
+ * preferences by {@link #extractRequest}, so they rank results instead of filtering them out.
  */
 public class RequirementExtractor {
 
@@ -40,7 +43,10 @@ public class RequirementExtractor {
                 "minBathrooms": {"type": ["integer", "null"]},
                 "types":        {"type": "array", "items": {"enum": ["house", "condo", "townhouse"]}},
                 "neighborhoods":{"type": "array", "items": {"type": "string"}},
-                "features":     {"type": "array", "items": {"type": "string"}}
+                "features":     {"type": "array", "items": {"type": "string"}},
+                "preferredTypes":         {"type": "array", "items": {"enum": ["house", "condo", "townhouse"]}},
+                "preferredNeighborhoods": {"type": "array", "items": {"type": "string"}},
+                "preferredFeatures":      {"type": "array", "items": {"type": "string"}}
               },
               "additionalProperties": false
             }""";
@@ -83,19 +89,29 @@ public class RequirementExtractor {
      * @throws ExtractionException if two replies in a row could not be parsed
      */
     public SearchCriteria extract(String userText) {
+        return extractRequest(userText).required();
+    }
+
+    /**
+     * Extracts hard requirements and soft preferences.
+     *
+     * @throws LLMException if the model is unavailable or the call fails
+     * @throws ExtractionException if two replies in a row could not be parsed
+     */
+    public ExtractedRequest extractRequest(String userText) {
         if (userText == null || userText.isBlank()) {
-            return SearchCriteria.empty();
+            return new ExtractedRequest(null, null);
         }
         if (!llm.isAvailable()) {
             throw new LLMException("The language model is not available.");
         }
         String reply = llm.completeStructured(buildPrompt(userText), SCHEMA);
         try {
-            return parseResponse(reply);
+            return parseRequest(reply);
         } catch (IllegalArgumentException first) {
             String retry = llm.completeStructured(buildStrictPrompt(userText, first.getMessage()), SCHEMA);
             try {
-                return parseResponse(retry);
+                return parseRequest(retry);
             } catch (IllegalArgumentException second) {
                 throw new ExtractionException("Sorry, I couldn't work out what you're looking for. "
                         + "Could you rephrase, e.g. \"3 bedroom house under $850k in Maple\"?", second);
@@ -110,7 +126,10 @@ public class RequirementExtractor {
          .append("- Include only criteria the buyer actually stated; omit everything else.\n")
          .append("- Prices are plain numbers in dollars (\"850k\" -> 850000, \"1.2M\" -> 1200000).\n")
          .append("- \"under X\" or \"at most X\" sets maxPrice; \"at least N bedrooms\" or \"N bedroom\" sets minBedrooms.\n")
-         .append("- types must be from: house, condo, townhouse.\n");
+         .append("- types must be from: house, condo, townhouse.\n")
+         .append("- Hedged wishes (\"maybe\", \"ideally\", \"preferably\", \"would be nice\", \"bonus if\") go in\n")
+         .append("  preferredTypes / preferredNeighborhoods / preferredFeatures, NOT in the hard fields.\n")
+         .append("  Firm requirements (\"must\", \"need\", or stated plainly) go in the hard fields.\n");
         if (!knownNeighborhoods.isEmpty()) {
             p.append("- neighborhoods must be from: ").append(String.join(", ", knownNeighborhoods)).append('\n');
         }
@@ -127,13 +146,32 @@ public class RequirementExtractor {
                 + "Use numbers, not strings, for prices and counts.\n\n" + buildPrompt(userText);
     }
 
+    /** Parses the model's reply into hard criteria only. */
+    SearchCriteria parseResponse(String reply) {
+        return parseRequest(reply).required();
+    }
+
     /**
-     * Parses the model's reply into criteria.
+     * Parses the model's reply into requirements and preferences.
      *
      * @throws IllegalArgumentException describing what was wrong with the reply
      */
-    SearchCriteria parseResponse(String reply) {
+    ExtractedRequest parseRequest(String reply) {
         JsonNode root = readObject(reply);
+        SearchCriteriaBuilder p = new SearchCriteriaBuilder();
+        for (String t : stringArray(root, "preferredTypes")) {
+            p.withType(PropertyType.fromString(t));
+        }
+        for (String n : stringArray(root, "preferredNeighborhoods")) {
+            p.withNeighborhood(n);
+        }
+        for (String f : stringArray(root, "preferredFeatures")) {
+            p.withFeature(f);
+        }
+        return new ExtractedRequest(parseRequired(root), p.build());
+    }
+
+    private SearchCriteria parseRequired(JsonNode root) {
         SearchCriteriaBuilder b = new SearchCriteriaBuilder();
         b.withMinPrice(optionalNumber(root, "minPrice"));
         b.withMaxPrice(optionalNumber(root, "maxPrice"));

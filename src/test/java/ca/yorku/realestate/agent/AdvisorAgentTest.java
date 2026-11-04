@@ -216,6 +216,23 @@ class AdvisorAgentTest {
         assertTrue(llm.last(AdvisorAgent.EXPLAIN_MARKER).contains("No listings matched"));
     }
 
+    @Test
+    void preferencesRankButDoNotFilter() {
+        // The Oct 31 live test: "maybe in Vaughan or Woodbridge" returned 0 when treated as a filter.
+        llm.decisions.add(SEARCH);
+        llm.extractions.add("{\"maxPrice\": 1500000, \"minBedrooms\": 3, \"types\": [\"house\"],"
+                + " \"preferredNeighborhoods\": [\"Vaughan\", \"Woodbridge\"]}");
+        llm.explanations.add("Here are your options.");
+        AgentResponse r = agent.handleQuery("3 bedroom house under 1.5M, maybe in Vaughan or Woodbridge");
+
+        assertFalse(r.getListings().isEmpty(), "soft preference must not empty the results");
+        assertTrue(r.getCriteria().getNeighborhoods().isEmpty());
+        String first = r.getListings().get(0).getNeighborhood();
+        assertTrue(first.equals("Vaughan") || first.equals("Woodbridge"), "preferred area ranks first: " + first);
+        assertTrue(r.getMessage().contains("Ranked with your preferences"));
+        assertTrue(llm.last(AdvisorAgent.EXPLAIN_MARKER).contains("Soft preferences"));
+    }
+
     // ---- tool selection ----
 
     @Test

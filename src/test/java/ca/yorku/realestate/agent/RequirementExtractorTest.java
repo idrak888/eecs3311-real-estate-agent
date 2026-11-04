@@ -168,4 +168,58 @@ class RequirementExtractorTest {
     void requiresClient() {
         assertThrows(IllegalArgumentException.class, () -> new RequirementExtractor(null));
     }
+
+    // ---- soft preferences ----
+
+    @Test
+    void hedgedWishesBecomePreferencesNotRequirements() {
+        MockLLMClient llm = new MockLLMClient();
+        llm.setDefaultResponse("{\"maxPrice\": 1500000, \"minBedrooms\": 3, \"types\": [\"house\"],"
+                + " \"features\": [\"garage\"], \"preferredNeighborhoods\": [\"Vaughan\", \"Woodbridge\"]}");
+        ExtractedRequest r = new RequirementExtractor(llm)
+                .extractRequest("3 bedroom house under 1.5M with a garage, maybe in Vaughan or Woodbridge");
+        assertTrue(r.required().getNeighborhoods().isEmpty(), "maybe must not filter");
+        assertEquals(Set.of("garage"), r.required().getRequiredFeatures());
+        assertEquals(Set.of("Vaughan", "Woodbridge"), r.preferred().getNeighborhoods());
+    }
+
+    @Test
+    void preferredTypesAndFeaturesParse() {
+        MockLLMClient llm = new MockLLMClient();
+        llm.setDefaultResponse("{\"preferredTypes\": [\"condo\"], \"preferredFeatures\": [\"Pool\"]}");
+        ExtractedRequest r = new RequirementExtractor(llm).extractRequest("ideally a condo with a pool");
+        assertTrue(r.required().isEmpty());
+        assertEquals(Set.of(PropertyType.CONDO), r.preferred().getTypes());
+        assertEquals(Set.of("pool"), r.preferred().getRequiredFeatures());
+        assertFalse(r.isEmpty());
+    }
+
+    @Test
+    void invalidPreferredTypeTriggersRetry() {
+        MockLLMClient llm = new MockLLMClient();
+        llm.setDefaultResponse("{\"preferredTypes\": [\"castle\"]}");
+        llm.setResponse(RequirementExtractor.RETRY_MARKER, "{\"preferredTypes\": [\"house\"]}");
+        assertEquals(Set.of(PropertyType.HOUSE),
+                new RequirementExtractor(llm).extractRequest("q").preferred().getTypes());
+        assertEquals(2, llm.getCallCount());
+    }
+
+    @Test
+    void promptExplainsHedgedWishRule() {
+        MockLLMClient llm = new MockLLMClient();
+        llm.setDefaultResponse("{}");
+        new RequirementExtractor(llm).extract("x");
+        String sent = llm.getPrompts().get(0);
+        assertTrue(sent.contains("\"maybe\""));
+        assertTrue(sent.contains("preferredNeighborhoods"));
+    }
+
+    @Test
+    void extractReturnsOnlyRequirements() {
+        MockLLMClient llm = new MockLLMClient();
+        llm.setDefaultResponse("{\"minBedrooms\": 2, \"preferredFeatures\": [\"gym\"]}");
+        SearchCriteria c = new RequirementExtractor(llm).extract("2 bed, gym would be nice");
+        assertEquals(Integer.valueOf(2), c.getMinBedrooms());
+        assertTrue(c.getRequiredFeatures().isEmpty());
+    }
 }

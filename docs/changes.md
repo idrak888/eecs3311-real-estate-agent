@@ -76,3 +76,31 @@ Format: Original design -> Implemented change -> Reason -> Impact
 - **RequirementExtractor** -> added `withVocabulary(neighborhoods, features)`; throws
   `ExtractionException` after the retry -> prompt lists the data set's real neighborhood and
   feature names so extracted criteria actually match listings.
+- **MemoryManager** -> added soft preferences (`mergePreferences`, `getRankingCriteria`),
+  `setCriteria()` and last-results tracking alongside history, `getCriteria`,
+  `mergeCriteria`, `getContext` -> preferences rank without filtering; last results let the
+  model resolve "the second one"; `setCriteria` keeps chat in step with the criteria panel.
+- **AgentTool framework** -> `ToolRequest` gained typed getters (`getDouble`, `getInt`,
+  `getStringList`) accepting numbers or numeric strings; `ToolManager` gained `describeTools()`
+  and turns tool exceptions into failed results -> model JSON is loosely typed, and one bad
+  tool call must not crash a turn.
+- **SearchTool** -> takes separate `criteria` (filter) and `rankingCriteria` (filter + soft
+  preferences) -> implements the "maybe in Vaughan" fix found in the Oct 31 live test.
+- **MortgageTool** -> also returns the affordability verdict when a profile is available ->
+  "can I afford the second one?" is one tool call.
+- **ComparisonTool** -> needs `MortgageCalculator` as well as `ListingRepository` -> F08 lists
+  monthly payment as a compared attribute; `ComparisonResult` gained `toTable()` for the CLI and
+  the explanation prompt.
+- **AdvisorAgent.selectTool** -> returns a validated decision (tool + parameters) rather than an
+  `AgentTool` -> the model must also say which listing IDs a request refers to; unknown tools
+  fall back to search. Mortgage answers are formatted in code from calculator output, so the
+  model never writes figures.
+- **AgentResponse** -> added mortgage, affordability, notice and aiAvailable fields -> the GUI
+  and CLI must show "explanation unavailable" / "AI unavailable" notices (F02, F08, F10).
+- **RequirementExtractor** -> added `extractRequest()` returning `ExtractedRequest`
+  (requirements + preferences); schema gained `preferredTypes/Neighborhoods/Features` -> live
+  test on Oct 31: "maybe in Vaughan or Woodbridge" was extracted as a hard filter and returned
+  0 of 60 listings; now those areas rank first and other matches still show.
+- **RealEstateService** -> `create(store, llm)` wires agent and tools on the shared repository;
+  agent searches update session criteria and notify observers; manual searches update agent
+  memory; the extractor gets the data set's neighborhoods and features after each load.

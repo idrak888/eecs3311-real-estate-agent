@@ -1,5 +1,14 @@
 package ca.yorku.realestate.service;
 
+import ca.yorku.realestate.agent.AdvisorAgent;
+import ca.yorku.realestate.agent.AgentResponse;
+import ca.yorku.realestate.agent.MemoryManager;
+import ca.yorku.realestate.agent.RequirementExtractor;
+import ca.yorku.realestate.agent.llm.LLMClient;
+import ca.yorku.realestate.agent.tool.ComparisonTool;
+import ca.yorku.realestate.agent.tool.MortgageTool;
+import ca.yorku.realestate.agent.tool.SearchTool;
+import ca.yorku.realestate.agent.tool.ToolManager;
 import ca.yorku.realestate.domain.Listing;
 import ca.yorku.realestate.domain.SearchCriteria;
 import ca.yorku.realestate.domain.finance.AffordabilityResult;
@@ -24,6 +33,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -34,7 +45,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * the shortlist with its undo history, and the financial profile. Every change is pushed to
  * registered {@link SearchObserver}s.
  *
- * <p>Agent operations ({@code askAgent}, {@code compare}) are added with the agent layer.
+ * <p>Agent operations ({@link #askAgent}, {@link #compare}) go to the {@link AdvisorAgent}.
+ * Searches made by the agent update the same session criteria and results as manual searches,
+ * so the criteria panel shows what the agent understood, and edits made in the panel carry
+ * into the next chat message.
  */
 public class RealEstateService {
 
@@ -50,6 +64,8 @@ public class RealEstateService {
     private List<Listing> results = List.of();
     private RankingStrategy strategy = new BestMatchStrategy();
     private FinancialProfile profile;
+    private AdvisorAgent agent;
+    private RequirementExtractor extractor;
 
     public RealEstateService(ListingRepository repository, ListingParserFactory parserFactory,
                              PreferenceStore store, MortgageCalculator calculator) {
@@ -59,10 +75,53 @@ public class RealEstateService {
         this.calculator = calculator;
     }
 
-    /** Standard wiring with the given preference store. */
+    /** Standard wiring without an agent; {@link #askAgent} reports the assistant unavailable. */
     public static RealEstateService create(PreferenceStore store) {
         return new RealEstateService(new ListingRepository(), new ListingParserFactory(), store,
                 new MortgageCalculator());
+    }
+
+    /** Standard wiring with the agent and its tools on the same repository and calculator. */
+    public static RealEstateService create(PreferenceStore store, LLMClient llm) {
+        ListingRepository repository = new ListingRepository();
+        MortgageCalculator calculator = new MortgageCalculator();
+        RealEstateService service = new RealEstateService(repository, new ListingParserFactory(), store, calculator);
+
+        ToolManager tools = new ToolManager();
+        tools.register(new SearchTool(repository));
+        tools.register(new MortgageTool(repository, calculator));
+        tools.register(new ComparisonTool(repository, calculator));
+        RequirementExtractor extractor = new RequirementExtractor(llm);
+        service.attachAgent(new AdvisorAgent(llm, extractor, tools, new MemoryManager()), extractor);
+        return service;
+    }
+
+    /** Connects an agent; the extractor's vocabulary is refreshed whenever listings load. */
+    public void attachAgent(AdvisorAgent advisor, RequirementExtractor requirementExtractor) {
+        this.agent = advisor;
+        this.extractor = requirementExtractor;
+        if (agent != null) {
+            agent.setRankingStrategy(strategy);
+            agent.setFinancialProfile(profile);
+        }
+        refreshVocabulary();
+    }
+
+    public boolean hasAgent() {
+        return agent != null;
+    }
+
+    private void refreshVocabulary() {
+        if (extractor == null) {
+            return;
+        }
+        Set<String> neighborhoods = new TreeSet<>();
+        Set<String> features = new TreeSet<>();
+        for (Listing l : repository.findAll()) {
+            neighborhoods.add(l.getNeighborhood());
+            features.addAll(l.getFeatures());
+        }
+        extractor.withVocabulary(neighborhoods, features);
     }
 
     // ---- observers ----
@@ -105,6 +164,7 @@ public class RealEstateService {
      */
     public LoadSummary loadListings(File file) throws IOException {
         LoadSummary summary = importer.importFile(file);
+        refreshVocabulary();
         criteria = SearchCriteria.empty();
         results = strategy.rank(repository.findAll(), criteria);
         notifyObservers();
@@ -129,6 +189,9 @@ public class RealEstateService {
         }
         try {
             profile = store.loadProfile().orElse(null);
+            if (agent != null) {
+                agent.setFinancialProfile(profile);
+            }
         } catch (IOException e) {
             warnings.add("Saved financial profile could not be restored: " + e.getMessage());
         }
@@ -151,6 +214,10 @@ public class RealEstateService {
         }
         criteria = c;
         results = strategy.rank(repository.findMatching(c.toFilter()), c);
+        if (agent != null) {
+            agent.getMemory().setCriteria(c);
+            agent.getMemory().setLastResults(results);
+        }
         notifyObservers();
         return results;
     }
@@ -174,12 +241,46 @@ public class RealEstateService {
             throw new IllegalArgumentException("ranking strategy is required");
         }
         strategy = newStrategy;
+        if (agent != null) {
+            agent.setRankingStrategy(newStrategy);
+        }
         results = strategy.rank(results, criteria);
         notifyObservers();
     }
 
     public RankingStrategy getRankingStrategy() {
         return strategy;
+    }
+
+    // ---- F02 / F08 / F10: agent ----
+
+    /**
+     * Sends a chat message to the agent. When the agent searched, the session criteria and
+     * results are updated and observers notified, exactly as for a manual search.
+     */
+    public AgentResponse askAgent(String message) {
+        if (agent == null) {
+            return AgentResponse.unavailable("The AI assistant is not set up. You can still search "
+                    + "with the criteria panel or the CLI search command.");
+        }
+        AgentResponse response = agent.handleQuery(message);
+        if (response.getToolsUsed().contains(SearchTool.NAME) && response.getCriteria() != null) {
+            criteria = response.getCriteria();
+            results = response.getListings();
+            notifyObservers();
+        }
+        return response;
+    }
+
+    /**
+     * Compares two to four listings. The matrix is always built; the AI summary is added when
+     * the model is available.
+     */
+    public AgentResponse compare(List<String> listingIds) {
+        if (agent == null) {
+            return AgentResponse.unavailable("Comparison needs the agent layer, which is not set up.");
+        }
+        return agent.compareProperties(listingIds);
     }
 
     // ---- F05 ----
@@ -213,6 +314,9 @@ public class RealEstateService {
             throw new IllegalArgumentException("financial profile is required");
         }
         profile = newProfile;
+        if (agent != null) {
+            agent.setFinancialProfile(newProfile);
+        }
         try {
             store.saveProfile(newProfile);
         } catch (IOException e) {

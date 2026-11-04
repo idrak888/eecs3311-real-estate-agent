@@ -41,9 +41,11 @@ src/main/java/ca/yorku/realestate/
     finance/     MortgageCalculator, MortgageTerms/Result, FinancialProfile, AffordabilityResult
     shortlist/   Shortlist, ShortlistCommand (Command), CommandInvoker (undo)
   service/       RealEstateService (Facade), SearchObserver (Observer)
-  agent/         RequirementExtractor (natural language -> SearchCriteria)
+  agent/         AdvisorAgent, RequirementExtractor, MemoryManager, AgentResponse
+    tool/        AgentTool, ToolManager, SearchTool, MortgageTool, ComparisonTool
     llm/         LLMClient (Adapter): AnthropicLLMClient, MockLLMClient
   config/        EnvConfig (.env loading)
+  app/           LlmConnectionCheck (one-off live API check)
   persistence/   ListingRepository, ListingImporter, LoadSummary, PreferenceStore
     parser/      ListingParser (Factory Method): JSON and CSV parsers
 src/main/resources/data/

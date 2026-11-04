@@ -208,17 +208,18 @@ public class AdvisorAgent {
     // ---- step 2: execution ----
 
     private AgentResponse handleSearch(String text) {
-        SearchCriteria extracted;
+        ExtractedRequest extracted;
         try {
-            extracted = extractor.extract(text);
+            extracted = extractor.extractRequest(text);
         } catch (ExtractionException e) {
             return AgentResponse.builder().message(e.getMessage()).criteria(memory.getCriteria()).build();
         }
-        if (extracted.isEmpty() && memory.getCriteria().isEmpty()) {
+        if (extracted.isEmpty() && memory.getCriteria().isEmpty() && memory.getPreferences().isEmpty()) {
             return AgentResponse.builder().message("Happy to help. What matters most? For example a "
                     + "budget, number of bedrooms, property type, or neighborhood.").build();
         }
-        SearchCriteria criteria = memory.mergeCriteria(extracted);
+        SearchCriteria criteria = memory.mergeCriteria(extracted.required());
+        memory.mergePreferences(extracted.preferred());
         ToolRequest request = ToolRequest.empty()
                 .with(SearchTool.CRITERIA, criteria)
                 .with(SearchTool.RANKING_CRITERIA, memory.getRankingCriteria())
@@ -234,7 +235,9 @@ public class AdvisorAgent {
         AgentResponse.Builder b = AgentResponse.builder().tool(SearchTool.NAME).criteria(criteria).listings(listings);
         String summary = listings.isEmpty() ? "No listings match " + criteria.describe() + "."
                 : "Found " + listings.size() + (listings.size() == 1 ? " listing" : " listings")
-                + " matching " + criteria.describe() + ".";
+                + " matching " + criteria.describe() + "."
+                + (memory.getPreferences().isEmpty() ? ""
+                : " Ranked with your preferences: " + memory.getPreferences().describe() + ".");
         String explanation;
         try {
             explanation = explainOrNull(listings, criteria, null);
