@@ -175,6 +175,20 @@ public class RealEstateService {
         return repository.count();
     }
 
+    /** Neighborhoods present in the loaded data, sorted, for the criteria panel. */
+    public List<String> availableNeighborhoods() {
+        Set<String> names = new TreeSet<>();
+        repository.findAll().forEach(l -> names.add(l.getNeighborhood()));
+        return new ArrayList<>(names);
+    }
+
+    /** Features present in the loaded data, sorted, for the criteria panel. */
+    public List<String> availableFeatures() {
+        Set<String> names = new TreeSet<>();
+        repository.findAll().forEach(l -> names.addAll(l.getFeatures()));
+        return new ArrayList<>(names);
+    }
+
     /**
      * Restores the saved shortlist and financial profile. Problems are returned (and sent to
      * observers) as warnings; a corrupt file leaves that item empty rather than failing startup.

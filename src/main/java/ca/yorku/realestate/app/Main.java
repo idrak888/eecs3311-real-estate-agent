@@ -7,6 +7,7 @@ import ca.yorku.realestate.persistence.LoadSummary;
 import ca.yorku.realestate.persistence.PreferenceStore;
 import ca.yorku.realestate.service.RealEstateService;
 import ca.yorku.realestate.ui.cli.CLIRenderer;
+import ca.yorku.realestate.ui.gui.MainWindow;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Application entry point. Starts the CLI (the Swing GUI is added next). Uses
- * {@link RealEstateService} wired with the agent and the API key from {@code .env}.
+ * Application entry point. Starts the GUI by default, or the CLI with {@code --cli}. Both use the
+ * same {@link RealEstateService}, wired with the agent and the API key from {@code .env}.
  *
  * <p>Options: {@code --cli}; {@code --data <file>} to load a different listing file.
  */
@@ -34,7 +35,7 @@ public final class Main {
 
     public static void main(String[] args) throws IOException {
         List<String> a = Arrays.asList(args);
-        boolean cli = true; // GUI not yet available; --cli accepted for forward compatibility
+        boolean cli = a.contains("--cli");
         int dataIndex = a.indexOf("--data");
         File data = dataIndex >= 0 && dataIndex + 1 < a.size() ? new File(a.get(dataIndex + 1)) : bundledListings();
 
@@ -51,6 +52,8 @@ public final class Main {
             }
             new CLIRenderer(service, new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)),
                     System.out).run();
+        } else {
+            MainWindow.launch(service, summary, warnings, aiConfigured());
         }
     }
 
