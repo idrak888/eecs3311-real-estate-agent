@@ -108,6 +108,8 @@ class ComparisonToolTest {
         assertTrue(table.contains("garage, pool"));
         assertTrue(table.contains("* = best in row"));
         assertEquals("none", ComparisonResult.format("Features", List.of()));
+        assertEquals("2,000", ComparisonResult.format("Square feet", 2000.0), "whole numbers without decimals");
+        assertEquals("1.5", ComparisonResult.format("Rating", 1.5));
     }
 
     @Test

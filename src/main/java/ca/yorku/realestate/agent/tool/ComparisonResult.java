@@ -77,7 +77,10 @@ public final class ComparisonResult {
             double d = ((Number) value).doubleValue();
             boolean money = attribute.toLowerCase(Locale.ROOT).contains("price")
                     || attribute.toLowerCase(Locale.ROOT).contains("payment");
-            return money ? String.format(Locale.ROOT, "$%,.0f", d) : String.format(Locale.ROOT, "%,.1f", d);
+            if (money) {
+                return String.format(Locale.ROOT, "$%,.0f", d);
+            }
+            return d == Math.rint(d) ? String.format(Locale.ROOT, "%,.0f", d) : String.format(Locale.ROOT, "%,.1f", d);
         }
         if (value instanceof List<?>) {
             List<?> l = (List<?>) value;
