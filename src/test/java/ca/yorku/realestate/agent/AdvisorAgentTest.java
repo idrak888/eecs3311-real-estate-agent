@@ -205,6 +205,21 @@ class AdvisorAgentTest {
     }
 
     @Test
+    void zeroMatchesStateTheMostRestrictiveRequirementFromCode() {
+        llm.decisions.add(SEARCH);
+        llm.extractions.add("{\"maxPrice\": 1500000, \"minBedrooms\": 3, \"types\": [\"house\"],"
+                + " \"neighborhoods\": [\"Vaughan\", \"Woodbridge\"], \"features\": [\"garage\"]}");
+        llm.explanations.add("If the area is flexible, dropping it opens up a few houses with garages.");
+        AgentResponse r = agent.handleQuery("3 bed house under 1.5M in Vaughan or Woodbridge with a garage");
+
+        assertTrue(r.getListings().isEmpty());
+        assertTrue(r.getMessage().contains("The most restrictive requirement is the area Vaughan or Woodbridge: "
+                + "without it, 3 listings match."), r.getMessage());
+        String prompt = llm.last(AdvisorAgent.EXPLAIN_MARKER);
+        assertTrue(prompt.contains("- Without the feature \"garage\": 3 matches"), "model gets the computed facts");
+    }
+
+    @Test
     void zeroMatchesExplainsWithoutListingIds() {
         llm.decisions.add(SEARCH);
         llm.extractions.add("{\"maxPrice\": 100000}");

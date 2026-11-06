@@ -154,6 +154,7 @@ public final class CLIRenderer implements SearchObserver {
         out.println("Criteria: " + describe(service.getCriteria()) + "  |  Ranked by: "
                 + service.getRankingStrategy().getName());
         renderResults(results);
+        service.diagnoseNoResults().ifPresent(d -> out.println(d.message()));
     }
 
     private void ask(String question) {
@@ -343,7 +344,7 @@ public final class CLIRenderer implements SearchObserver {
     /** Prints a results table, at most {@value #RESULTS_SHOWN} rows. */
     public void renderResults(List<Listing> results) {
         if (results.isEmpty()) {
-            out.println("No listings match. Try loosening a criterion, or 'ask' the advisor for suggestions.");
+            out.println("No listings match.");
             return;
         }
         out.println(String.format(Locale.ROOT, "%-6s %-10s %-16s %12s %4s %5s %11s",

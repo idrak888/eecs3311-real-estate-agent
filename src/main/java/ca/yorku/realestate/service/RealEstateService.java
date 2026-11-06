@@ -11,6 +11,7 @@ import ca.yorku.realestate.agent.tool.SearchTool;
 import ca.yorku.realestate.agent.tool.ToolManager;
 import ca.yorku.realestate.domain.Listing;
 import ca.yorku.realestate.domain.SearchCriteria;
+import ca.yorku.realestate.domain.ZeroMatchAnalyzer;
 import ca.yorku.realestate.domain.finance.AffordabilityResult;
 import ca.yorku.realestate.domain.finance.FinancialProfile;
 import ca.yorku.realestate.domain.finance.MortgageCalculator;
@@ -243,6 +244,17 @@ public class RealEstateService {
 
     public SearchCriteria getCriteria() {
         return criteria;
+    }
+
+    /**
+     * When the current search found nothing, names the most restrictive requirement and how many
+     * listings match without it. Empty when there are results or no criteria.
+     */
+    public Optional<ZeroMatchAnalyzer.Diagnosis> diagnoseNoResults() {
+        if (!results.isEmpty() || criteria.isEmpty() || !criteria.isValid()) {
+            return Optional.empty();
+        }
+        return Optional.of(ZeroMatchAnalyzer.analyze(criteria, repository.findAll()));
     }
 
     public List<Listing> getResults() {

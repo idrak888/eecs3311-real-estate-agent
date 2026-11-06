@@ -281,8 +281,12 @@ public final class MainWindow extends JFrame implements SearchObserver {
     public void onResultsChanged(List<Listing> results) {
         onEdt(() -> {
             resultsModel.setListings(results);
-            resultCount.setText(results.size() + (results.size() == 1 ? " listing" : " listings")
-                    + "   ·   ranked by " + service.getRankingStrategy().getName());
+            String header = results.size() + (results.size() == 1 ? " listing" : " listings")
+                    + "   ·   ranked by " + service.getRankingStrategy().getName();
+            String diagnosis = service.diagnoseNoResults().map(d -> d.message()).orElse(null);
+            resultCount.setText(diagnosis == null ? header
+                    : "<html><b>No listings match.</b> " + diagnosis + "</html>");
+            resultCount.setForeground(diagnosis == null ? java.awt.Color.BLACK : new java.awt.Color(0xA66300));
         });
     }
 

@@ -11,6 +11,7 @@ import ca.yorku.realestate.agent.tool.ToolRequest;
 import ca.yorku.realestate.agent.tool.ToolResult;
 import ca.yorku.realestate.domain.Listing;
 import ca.yorku.realestate.domain.SearchCriteria;
+import ca.yorku.realestate.domain.ZeroMatchAnalyzer;
 import ca.yorku.realestate.domain.finance.AffordabilityResult;
 import ca.yorku.realestate.domain.finance.FinancialProfile;
 import ca.yorku.realestate.domain.finance.MortgageResult;
@@ -233,14 +234,16 @@ public class AdvisorAgent {
         memory.setLastResults(listings);
 
         AgentResponse.Builder b = AgentResponse.builder().tool(SearchTool.NAME).criteria(criteria).listings(listings);
+        ZeroMatchAnalyzer.Diagnosis diagnosis = result.getData(SearchTool.DIAGNOSIS, ZeroMatchAnalyzer.Diagnosis.class).orElse(null);
         String summary = listings.isEmpty() ? "No listings match " + criteria.describe() + "."
+                + (diagnosis == null ? "" : " " + diagnosis.message())
                 : "Found " + listings.size() + (listings.size() == 1 ? " listing" : " listings")
                 + " matching " + criteria.describe() + "."
                 + (memory.getPreferences().isEmpty() ? ""
                 : " Ranked with your preferences: " + memory.getPreferences().describe() + ".");
         String explanation;
         try {
-            explanation = explainOrNull(listings, criteria, null);
+            explanation = explainOrNull(listings, criteria, null, diagnosis);
         } catch (LLMException e) {
             explanation = null; // results are still valid; only the narrative is lost
         }
@@ -324,7 +327,7 @@ public class AdvisorAgent {
         }
         String summary;
         try {
-            summary = explainOrNull(c.getListings(), memory.getCriteria(), c);
+            summary = explainOrNull(c.getListings(), memory.getCriteria(), c, null);
         } catch (LLMException e) {
             summary = null;
         }
@@ -354,12 +357,13 @@ public class AdvisorAgent {
      * @return the explanation, or null if the model could not produce a grounded one
      */
     public String explainResults(List<Listing> listings, SearchCriteria criteria) {
-        return explainOrNull(listings, criteria, null);
+        return explainOrNull(listings, criteria, null, null);
     }
 
-    private String explainOrNull(List<Listing> listings, SearchCriteria criteria, ComparisonResult comparison) {
+    private String explainOrNull(List<Listing> listings, SearchCriteria criteria, ComparisonResult comparison,
+                                 ZeroMatchAnalyzer.Diagnosis diagnosis) {
         List<Listing> shown = listings.subList(0, Math.min(MAX_EXPLAINED, listings.size()));
-        String prompt = buildExplanationPrompt(listings, shown, criteria, comparison);
+        String prompt = buildExplanationPrompt(listings, shown, criteria, comparison, diagnosis);
         String text = llm.complete(prompt);
         if (validateGrounding(text, shown)) {
             return text.trim();
@@ -372,7 +376,7 @@ public class AdvisorAgent {
     }
 
     String buildExplanationPrompt(List<Listing> all, List<Listing> shown, SearchCriteria criteria,
-                                  ComparisonResult comparison) {
+                                  ComparisonResult comparison, ZeroMatchAnalyzer.Diagnosis diagnosis) {
         StringBuilder p = new StringBuilder();
         p.append(EXPLAIN_MARKER).append(" in 3 to 5 sentences.\n")
          .append("Rules:\n")
@@ -387,8 +391,13 @@ public class AdvisorAgent {
         if (comparison != null) {
             p.append("\nComparison table:\n").append(comparison.toTable());
         } else if (shown.isEmpty()) {
-            p.append("\nNo listings matched. Explain briefly which requirement is most likely too strict "
-                    + "and suggest one change. Do not mention any listing IDs.\n");
+            p.append("\nNo listings matched. Using ONLY the facts below, suggest which requirement to relax "
+                    + "and why it might be worth it for this buyer. Do not mention any listing IDs.\n");
+            if (diagnosis != null) {
+                for (ZeroMatchAnalyzer.Relaxation r : diagnosis.relaxations()) {
+                    p.append("- Without ").append(r.requirement()).append(": ").append(r.matches()).append(" matches\n");
+                }
+            }
         } else {
             p.append("\nListings (").append(all.size()).append(" matched");
             if (all.size() > shown.size()) {

@@ -284,4 +284,20 @@ class RealEstateServiceTest {
         assertEquals(warnings, o.warnings);
         assertTrue(s.getShortlist().isEmpty());
     }
+
+    // ---- zero-match diagnosis ----
+
+    @Test
+    void emptySearchIsDiagnosedButNonEmptyIsNot() throws IOException {
+        RealEstateService s = loaded(tempDir());
+        s.search(new SearchCriteriaBuilder().withMaxPrice(1_500_000.0).withMinBedrooms(3).withType(PropertyType.HOUSE)
+                .withNeighborhood("Vaughan").withNeighborhood("Woodbridge").withFeature("garage").build());
+        assertTrue(s.getResults().isEmpty());
+        assertTrue(s.diagnoseNoResults().orElseThrow().message().contains("the area Vaughan or Woodbridge"));
+
+        s.search(new SearchCriteriaBuilder().withMinBedrooms(3).build());
+        assertTrue(s.diagnoseNoResults().isEmpty());
+        s.search(SearchCriteria.empty());
+        assertTrue(s.diagnoseNoResults().isEmpty());
+    }
 }

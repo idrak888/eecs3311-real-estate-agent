@@ -86,7 +86,10 @@ class CLIRendererTest {
     }
 
     @Test
-    void zeroMatchesSuggestsNextStep() {
+    void zeroMatchesNamesTheBlockingRequirement() {
+        String out = run("search --max-price 1.5M --beds 3 --type house --area Vaughan --area Woodbridge --feature garage");
+        assertTrue(out.contains("No listings match."), out);
+        assertTrue(out.contains("The most restrictive requirement is the area Vaughan or Woodbridge: without it, 3 listings match."), out);
         assertTrue(run("search --max-price 10").contains("No listings match"));
     }
 

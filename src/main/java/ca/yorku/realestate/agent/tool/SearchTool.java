@@ -2,9 +2,11 @@ package ca.yorku.realestate.agent.tool;
 
 import ca.yorku.realestate.domain.Listing;
 import ca.yorku.realestate.domain.SearchCriteria;
+import ca.yorku.realestate.domain.ZeroMatchAnalyzer;
 import ca.yorku.realestate.domain.ranking.BestMatchStrategy;
 import ca.yorku.realestate.domain.ranking.RankingStrategy;
 import ca.yorku.realestate.persistence.ListingRepository;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,8 @@ import java.util.Map;
  * <p>Parameters: {@value #CRITERIA} (SearchCriteria, required), {@value #RANKING_CRITERIA}
  * (SearchCriteria including soft preferences, optional; defaults to the criteria) and
  * {@value #STRATEGY} (RankingStrategy, optional; defaults to best match).
- * Data returned: {@value #COUNT} and {@value #TOTAL}.
+ * Data returned: {@value #COUNT}, {@value #TOTAL} and, when nothing matched,
+ * {@value #DIAGNOSIS} (a {@link ZeroMatchAnalyzer.Diagnosis} naming the most restrictive requirement).
  */
 public class SearchTool implements AgentTool {
 
@@ -24,6 +27,7 @@ public class SearchTool implements AgentTool {
     public static final String STRATEGY = "strategy";
     public static final String COUNT = "count";
     public static final String TOTAL = "total";
+    public static final String DIAGNOSIS = "diagnosis";
 
     private final ListingRepository repository;
 
@@ -55,6 +59,12 @@ public class SearchTool implements AgentTool {
         RankingStrategy strategy = request.get(STRATEGY, RankingStrategy.class).orElse(new BestMatchStrategy());
 
         List<Listing> ranked = strategy.rank(repository.findMatching(criteria.toFilter()), rankBy);
-        return ToolResult.success(ranked, Map.of(COUNT, ranked.size(), TOTAL, repository.count()));
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put(COUNT, ranked.size());
+        data.put(TOTAL, repository.count());
+        if (ranked.isEmpty() && !criteria.isEmpty()) {
+            data.put(DIAGNOSIS, ZeroMatchAnalyzer.analyze(criteria, repository.findAll()));
+        }
+        return ToolResult.success(ranked, data);
     }
 }
