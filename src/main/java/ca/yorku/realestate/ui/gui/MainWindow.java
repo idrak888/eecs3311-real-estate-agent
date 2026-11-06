@@ -50,6 +50,7 @@ public final class MainWindow extends JFrame implements SearchObserver {
     private final JLabel status = new JLabel(" ");
     private String loadStatus = "";
     private final boolean aiConfigured;
+    private boolean aiFailing;
 
     public MainWindow(RealEstateService service, LoadSummary summary, boolean aiConfigured) {
         super("Real Estate Advisor");
@@ -228,11 +229,25 @@ public final class MainWindow extends JFrame implements SearchObserver {
     }
 
     private void refreshStatus() {
-        status.setText(loadStatus + "   |   AI assistant: " + (aiConfigured ? "ready" : "not configured (no API key in .env)"));
+        status.setText(loadStatus + "   |   AI assistant: " + aiStatus(aiConfigured, aiFailing));
+    }
+
+    /** Status bar text for the assistant. */
+    static String aiStatus(boolean configured, boolean failing) {
+        if (!configured) {
+            return "not configured (no API key in .env)";
+        }
+        return failing ? "unavailable (last request failed; search and finance tools still work)" : "ready";
+    }
+
+    private void setAiFailing(boolean failing) {
+        aiFailing = failing;
+        refreshStatus();
     }
 
     /** After each chat reply: results already arrived through the observer; open any comparison. */
     private void onAgentResponse(AgentResponse response) {
+        setAiFailing(!response.isAiAvailable());
         if (response.getComparison().isPresent()) {
             new ComparisonDialog(this, response).setVisible(true);
         }
@@ -256,6 +271,9 @@ public final class MainWindow extends JFrame implements SearchObserver {
                 setCursor(java.awt.Cursor.getDefaultCursor());
                 try {
                     AgentResponse r = get();
+                    if (aiConfigured) {
+                        setAiFailing(!r.isAiAvailable());
+                    }
                     if (r.getComparison().isPresent()) {
                         new ComparisonDialog(MainWindow.this, r).setVisible(true);
                     } else {

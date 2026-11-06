@@ -171,7 +171,9 @@ class CLIRendererTest {
     @Test
     void askWithModelDownSaysSo() {
         llm.setAvailable(false);
-        assertTrue(run("ask 3 bed house").contains("isn't available"));
+        String out = run("ask 3 bed house");
+        assertTrue(out.contains("isn't available"));
+        assertTrue(out.contains("Tip: 'search"), "points to the non-AI path");
     }
 
     @Test

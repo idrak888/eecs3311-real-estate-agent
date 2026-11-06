@@ -22,6 +22,8 @@ class LLMClientTest {
         final List<Map<String, String>> headers = new ArrayList<>();
         final List<String> bodies = new ArrayList<>();
         int status = 200;
+        java.util.LinkedList<Integer> statuses = new java.util.LinkedList<>();
+        int calls;
         String reply = "{\"content\":[{\"type\":\"text\",\"text\":\"Hello\"}],"
                 + "\"usage\":{\"input_tokens\":12,\"output_tokens\":3}}";
         IOException failWith;
@@ -29,12 +31,15 @@ class LLMClientTest {
         @Override
         public AnthropicLLMClient.HttpResult post(String url, Map<String, String> h, String body)
                 throws IOException {
+            calls++;
             if (failWith != null) {
                 throw failWith;
             }
             headers.add(h);
             bodies.add(body);
-            return new AnthropicLLMClient.HttpResult(status, reply);
+            int s = statuses.isEmpty() ? status : statuses.removeFirst();
+            return new AnthropicLLMClient.HttpResult(s, s == 200 ? reply
+                    : "{\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}}");
         }
     }
 
@@ -129,10 +134,10 @@ class LLMClientTest {
     @Test
     void httpErrorIsReportedWithoutTheKey() {
         FakeTransport t = new FakeTransport();
-        t.status = 401;
-        t.reply = "{\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"}}";
+        AnthropicLLMClient.Transport authFails = (url, h, body) -> new AnthropicLLMClient.HttpResult(401,
+                "{\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"}}");
         LLMException e = assertThrows(LLMException.class,
-                () -> new AnthropicLLMClient("sk-secret-123", "m", 10, t).complete("x"));
+                () -> new AnthropicLLMClient("sk-secret-123", "m", 10, authFails).complete("x"));
         assertTrue(e.getMessage().contains("401"));
         assertTrue(e.getMessage().contains("invalid x-api-key"));
         assertFalse(e.getMessage().contains("sk-secret-123"));
@@ -143,8 +148,9 @@ class LLMClientTest {
         FakeTransport t = new FakeTransport();
         t.failWith = new IOException("timed out");
         LLMException e = assertThrows(LLMException.class,
-                () -> new AnthropicLLMClient("k", "m", 10, t).complete("x"));
+                () -> new AnthropicLLMClient("k", "m", 10, t, 1, ms -> { }).complete("x"));
         assertTrue(e.getMessage().contains("timed out"));
+        assertEquals(2, t.calls, "one retry after a network failure");
     }
 
     @Test
@@ -162,5 +168,47 @@ class LLMClientTest {
         new AnthropicLLMClient("k", "m", 10, t).complete("quote \" and\nnewline");
         assertEquals("quote \" and\nnewline",
                 JSON.readTree(t.bodies.get(0)).get("messages").get(0).get("content").asText());
+    }
+
+    // ---- retries ----
+
+    @Test
+    void temporaryFailureIsRetriedOnceThenSucceeds() {
+        FakeTransport t = new FakeTransport();
+        t.statuses.add(529);
+        List<Long> pauses = new ArrayList<>();
+        AnthropicLLMClient client = new AnthropicLLMClient("k", "m", 10, t, 1, pauses::add);
+        assertEquals("Hello", client.complete("x"));
+        assertEquals(2, t.calls);
+        assertEquals(List.of(AnthropicLLMClient.RETRY_DELAY_MS), pauses);
+    }
+
+    @Test
+    void persistentOverloadFailsAfterOneRetryWithReason() {
+        FakeTransport t = new FakeTransport();
+        t.status = 429;
+        LLMException e = assertThrows(LLMException.class,
+                () -> new AnthropicLLMClient("k", "m", 10, t, 1, ms -> { }).complete("x"));
+        assertEquals(2, t.calls);
+        assertTrue(e.getMessage().contains("HTTP 429"));
+        assertTrue(e.getMessage().contains("after retrying"));
+    }
+
+    @Test
+    void permanentErrorsAreNotRetried() {
+        FakeTransport t = new FakeTransport();
+        t.status = 400;
+        assertThrows(LLMException.class, () -> new AnthropicLLMClient("k", "m", 10, t, 1, ms -> { }).complete("x"));
+        assertEquals(1, t.calls);
+    }
+
+    @Test
+    void temporaryStatusClassification() {
+        assertTrue(AnthropicLLMClient.isTemporary(429));
+        assertTrue(AnthropicLLMClient.isTemporary(500));
+        assertTrue(AnthropicLLMClient.isTemporary(529));
+        assertFalse(AnthropicLLMClient.isTemporary(400));
+        assertFalse(AnthropicLLMClient.isTemporary(401));
+        assertFalse(AnthropicLLMClient.isTemporary(404));
     }
 }

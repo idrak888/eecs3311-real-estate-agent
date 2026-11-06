@@ -118,3 +118,15 @@ Format: Original design -> Implemented change -> Reason -> Impact
   updates are marshalled back with `invokeLater` -> the window stays responsive during LLM calls.
 - **RealEstateService** -> added `availableNeighborhoods()` and `availableFeatures()` -> the
   criteria panel lists what exists in the loaded data.
+- **ZeroMatchAnalyzer** (new, domain) -> on an empty search, drops each requirement in turn and
+  reports the one whose removal finds the most listings ("The most restrictive requirement is the
+  area Vaughan or Woodbridge: without it, 3 listings match.") -> F02/F03 require naming the most
+  restrictive criterion; computing it in code keeps the advice true for the loaded data. Used by
+  `SearchTool` (data `diagnosis`), the agent (stated in the reply and given to the model as facts),
+  `RealEstateService.diagnoseNoResults()`, the CLI and the GUI results header.
+- **AnthropicLLMClient retries** -> temporary failures (network/timeout, HTTP 429, 5xx, 529) are
+  retried once after a short pause; 400/401/404 fail immediately -> a single overload no longer
+  costs the user a turn.
+- **AI status** -> GUI status bar shows "ready", "not configured" or "unavailable (last request
+  failed)" from each agent response; the CLI suggests `search` when the assistant is down ->
+  F02 requires telling the user structured search still works when the LLM fails.

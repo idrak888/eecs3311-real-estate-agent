@@ -11,6 +11,7 @@ Running log for report Section 5. Add a row per session.
 | 2026-10-30 | Claude (claude.ai) | Claude Opus 5.5 | F09: Shortlist + Command classes; PreferenceStore; RealEstateService facade + SearchObserver; LLMClient/MockLLMClient/AnthropicLLMClient (Adapter) + EnvConfig; F02: RequirementExtractor; tests | | |
 | 2026-11-04 | Claude (claude.ai) | Claude Opus 5.5 | F02/F10: MemoryManager; tool framework + SearchTool/MortgageTool; F08: ComparisonTool; AdvisorAgent (LLM tool selection, grounding check, regeneration); facade askAgent/compare; soft-preference fix; tests | | |
 | 2026-11-05 | Claude (claude.ai) | Claude Opus 5.5 | CLI (CLIRenderer, Main); Swing GUI (MainWindow, CriteriaPanel, ChatPanel, ShortlistPanel, detail/comparison/profile dialogs); rendered screenshots to check layout; tests | | |
+| 2026-11-06 | Claude (claude.ai) | Claude Opus 5.5 | F02/F03 error flows: ZeroMatchAnalyzer (most restrictive criterion) in tool, agent, CLI, GUI; LLM retry on temporary failures; live AI status; tests | | |
 
 ## Representative interactions
 
@@ -37,3 +38,7 @@ Running log for report Section 5. Add a row per session.
   criteria panel was squeezed below its natural width, so "Townhouse" was cut off and the
   neighborhood/feature lists collapsed to one row. Fixed the panel sizing before moving on.
   Also caught that the comparison table showed whole numbers as "3.0" and "1,506.0".
+- 2026-11-06: Decided the "most restrictive criterion" for empty searches must be computed, not
+  generated: the analyzer re-runs the search with each requirement removed, and the model only
+  phrases advice from those counts. Verified the expected counts for the Vaughan query (area 3,
+  garage 3, price/beds/type 1 each) independently in Python before writing the test.

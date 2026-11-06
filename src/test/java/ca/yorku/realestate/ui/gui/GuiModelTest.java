@@ -226,4 +226,11 @@ class GuiModelTest {
         assertFalse(ListingDetailDialog.color(ca.yorku.realestate.domain.finance.Verdict.AFFORDABLE)
                 .equals(ListingDetailDialog.color(ca.yorku.realestate.domain.finance.Verdict.UNAFFORDABLE)));
     }
+
+    @Test
+    void statusBarDescribesAssistantState() {
+        assertTrue(MainWindow.aiStatus(false, false).startsWith("not configured"));
+        assertEquals("ready", MainWindow.aiStatus(true, false));
+        assertTrue(MainWindow.aiStatus(true, true).startsWith("unavailable"));
+    }
 }

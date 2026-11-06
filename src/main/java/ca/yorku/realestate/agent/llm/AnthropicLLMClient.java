@@ -20,6 +20,10 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>The API key comes from local configuration ({@code .env}) and is sent only in the
  * {@code x-api-key} header; it never appears in exceptions or logs. Token usage reported by the
  * API is accumulated so the AI usage log can be filled from real numbers.
+ *
+ * <p>Temporary failures (network errors, timeouts, HTTP 429 rate limits and 5xx/529 overloads)
+ * are retried once after a short pause. Permanent ones, such as a bad key (401) or bad request
+ * (400), fail immediately.
  */
 public class AnthropicLLMClient implements LLMClient {
 
@@ -27,6 +31,10 @@ public class AnthropicLLMClient implements LLMClient {
     public static final String API_VERSION = "2023-06-01";
     public static final int DEFAULT_MAX_TOKENS = 1024;
     public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+    /** Extra attempts after a temporary failure. */
+    public static final int DEFAULT_RETRIES = 1;
+    /** Pause before a retry, in milliseconds. */
+    public static final long RETRY_DELAY_MS = 750;
 
     /** Sends one HTTP request; replaced in tests so no network is needed. */
     @FunctionalInterface
@@ -38,19 +46,38 @@ public class AnthropicLLMClient implements LLMClient {
     public record HttpResult(int status, String body) {
     }
 
+    /** Pauses between attempts; replaced in tests so they run instantly. */
+    @FunctionalInterface
+    interface Sleeper {
+        void sleep(long millis) throws InterruptedException;
+    }
+
     private final String apiKey;
     private final String model;
     private final int maxTokens;
     private final Transport transport;
+    private final int retries;
+    private final Sleeper sleeper;
     private final ObjectMapper mapper = new ObjectMapper();
     private final AtomicLong inputTokens = new AtomicLong();
     private final AtomicLong outputTokens = new AtomicLong();
 
     public AnthropicLLMClient(String apiKey, String model, int maxTokens, Transport transport) {
+        this(apiKey, model, maxTokens, transport, DEFAULT_RETRIES, Thread::sleep);
+    }
+
+    AnthropicLLMClient(String apiKey, String model, int maxTokens, Transport transport, int retries, Sleeper sleeper) {
         this.apiKey = apiKey;
         this.model = model == null || model.isBlank() ? EnvConfig.DEFAULT_MODEL : model;
         this.maxTokens = maxTokens;
         this.transport = transport;
+        this.retries = Math.max(0, retries);
+        this.sleeper = sleeper;
+    }
+
+    /** HTTP statuses worth one more try: rate limited, server error, overloaded. */
+    static boolean isTemporary(int status) {
+        return status == 429 || status == 529 || (status >= 500 && status <= 599);
     }
 
     /** Client configured from {@code .env} / environment, using the JDK HTTP client. */
@@ -98,20 +125,40 @@ public class AnthropicLLMClient implements LLMClient {
             throw new LLMException("No LLM API key is configured. Copy .env.example to .env and add your key.");
         }
         String body = requestBody(system, prompt);
-        HttpResult result;
+        Map<String, String> headers = Map.of(
+                "x-api-key", apiKey,
+                "anthropic-version", API_VERSION,
+                "content-type", "application/json");
+        for (int attempt = 0; ; attempt++) {
+            boolean lastAttempt = attempt >= retries;
+            HttpResult result;
+            try {
+                result = transport.post(ENDPOINT, headers, body);
+            } catch (IOException e) {
+                if (lastAttempt) {
+                    throw new LLMException("Could not reach the language model: " + e.getMessage(), e);
+                }
+                pause(attempt);
+                continue;
+            }
+            if (result.status() == 200) {
+                return parseText(result.body());
+            }
+            if (lastAttempt || !isTemporary(result.status())) {
+                throw new LLMException("Language model returned HTTP " + result.status()
+                        + errorDetail(result.body()) + (attempt > 0 ? " (after retrying)" : ""));
+            }
+            pause(attempt);
+        }
+    }
+
+    private void pause(int attempt) {
         try {
-            result = transport.post(ENDPOINT, Map.of(
-                    "x-api-key", apiKey,
-                    "anthropic-version", API_VERSION,
-                    "content-type", "application/json"), body);
-        } catch (IOException e) {
-            throw new LLMException("Could not reach the language model: " + e.getMessage(), e);
+            sleeper.sleep(RETRY_DELAY_MS * (attempt + 1));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new LLMException("Interrupted while waiting to retry", e);
         }
-        if (result.status() != 200) {
-            throw new LLMException("Language model returned HTTP " + result.status()
-                    + errorDetail(result.body()));
-        }
-        return parseText(result.body());
     }
 
     String requestBody(String system, String prompt) {

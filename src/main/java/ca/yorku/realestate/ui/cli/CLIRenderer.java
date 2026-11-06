@@ -178,6 +178,9 @@ public final class CLIRenderer implements SearchObserver {
             renderResults(r.getListings());
         }
         r.getNotice().ifPresent(n -> out.println("Note: " + n));
+        if (!r.isAiAvailable() && r.getComparison().isEmpty()) {
+            out.println("Tip: 'search --max-price 900k --beds 3 --type house' works without the assistant.");
+        }
         if (!r.getToolsUsed().isEmpty()) {
             out.println("[tools: " + String.join(", ", r.getToolsUsed()) + "]");
         }
