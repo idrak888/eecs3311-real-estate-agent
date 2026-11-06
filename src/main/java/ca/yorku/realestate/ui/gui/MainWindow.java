@@ -30,7 +30,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Main Swing window. Observes {@link RealEstateService}: every search, re-rank and agent search
  * arrives through {@link #onResultsChanged} and {@link #onCriteriaChanged}, so the table and the
- * criteria panel always show the service's state. The window holds no business logic.
+ * criteria panel always show the service's state, including searches the agent runs from the
+ * chat panel. The window holds no business logic.
  */
 public final class MainWindow extends JFrame implements SearchObserver {
 
@@ -41,6 +42,7 @@ public final class MainWindow extends JFrame implements SearchObserver {
     private final ResultsTableModel resultsModel = new ResultsTableModel();
     private final JTable resultsTable = new JTable(resultsModel);
     private final JLabel resultCount = new JLabel(" ");
+    private final ChatPanel chatPanel;
     private final JLabel status = new JLabel(" ");
     private String loadStatus = "";
     private final boolean aiConfigured;
@@ -49,6 +51,7 @@ public final class MainWindow extends JFrame implements SearchObserver {
         super("Real Estate Advisor");
         this.service = service;
         this.aiConfigured = aiConfigured;
+        this.chatPanel = new ChatPanel(service::askAgent, this::onAgentResponse, aiConfigured);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1000, 640));
         setPreferredSize(new Dimension(1280, 800));
@@ -59,7 +62,11 @@ public final class MainWindow extends JFrame implements SearchObserver {
         criteriaScroll.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.LIGHT_GRAY));
         criteriaScroll.setPreferredSize(new Dimension(criteriaPanel.getPreferredSize().width + 20, 600));
         add(criteriaScroll, BorderLayout.WEST);
-        add(buildCenter(), BorderLayout.CENTER);
+        javax.swing.JSplitPane split = new javax.swing.JSplitPane(javax.swing.JSplitPane.VERTICAL_SPLIT,
+                buildCenter(), chatPanel);
+        split.setResizeWeight(0.55);
+        split.setBorder(null);
+        add(split, BorderLayout.CENTER);
         add(buildStatusBar(), BorderLayout.SOUTH);
 
         criteriaPanel.setVocabulary(service.availableNeighborhoods(), service.availableFeatures());
@@ -188,6 +195,11 @@ public final class MainWindow extends JFrame implements SearchObserver {
 
     private void refreshStatus() {
         status.setText(loadStatus + "   |   AI assistant: " + (aiConfigured ? "ready" : "not configured (no API key in .env)"));
+    }
+
+    /** After each chat reply; later features (comparison view) hook in here. */
+    private void onAgentResponse(ca.yorku.realestate.agent.AgentResponse response) {
+        // Results and criteria already arrived through the observer methods.
     }
 
     // ---- observer ----

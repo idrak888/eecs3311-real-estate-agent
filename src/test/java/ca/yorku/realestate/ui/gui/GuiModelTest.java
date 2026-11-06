@@ -137,4 +137,27 @@ class GuiModelTest {
         m.setListings(null);
         assertEquals(0, m.getRowCount());
     }
+
+    // ---- chat panel ----
+
+    @Test
+    void chatMetaLineSummarizesToolsAndEffects() {
+        ca.yorku.realestate.agent.AgentResponse search = ca.yorku.realestate.agent.AgentResponse.builder()
+                .tool("search").listings(List.of(TestData.listing("A1", 1, 1, 1, 1, PropertyType.CONDO, "X", 2000)))
+                .message("Found 1.").build();
+        assertEquals("tools: search · results updated above", ChatPanel.metaLine(search));
+        assertEquals("", ChatPanel.metaLine(ca.yorku.realestate.agent.AgentResponse.builder().message("hi").build()));
+    }
+
+    @Test
+    void chatShowsRepliesNoticesAndDisabledStateWithoutKey() {
+        ChatPanel off = new ChatPanel(q -> null, r -> { }, false);
+        assertTrue(off.transcriptText().contains("not configured"));
+        ChatPanel on = new ChatPanel(q -> null, r -> { }, true);
+        on.show(ca.yorku.realestate.agent.AgentResponse.builder().message("Here you go.")
+                .notice("Explanation unavailable; showing results only.").build());
+        String t = on.transcriptText();
+        assertTrue(t.contains("Advisor: Here you go."));
+        assertTrue(t.contains("Explanation unavailable"));
+    }
 }
