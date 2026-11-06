@@ -104,3 +104,17 @@ Format: Original design -> Implemented change -> Reason -> Impact
 - **RealEstateService** -> `create(store, llm)` wires agent and tools on the shared repository;
   agent searches update session criteria and notify observers; manual searches update agent
   memory; the extractor gets the data set's neighborhoods and features after each load.
+- **CLIRenderer** -> implements `SearchObserver` but prints results from each command and uses
+  the observer for warnings only -> avoids printing every result twice; commands follow Stage 1
+  (`search`, `ask`, `show`, `compare`, `mortgage`, `afford`, `shortlist`, `undo`, `--sort`) plus
+  `profile`, `criteria`, `load`, `help`.
+- **GUI structure** -> `MainWindow` composes `CriteriaPanel`, `ChatPanel` and `ShortlistPanel`
+  instead of holding every control, plus `ListingDetailDialog` (details/mortgage/affordability
+  tabs), `ComparisonDialog` and `ProfileDialog` -> keeps each Swing class focused; `MainWindow`
+  remains the single `SearchObserver`.
+- **Formats** (new, `ui` package) -> one place for money/percent formatting, amount parsing
+  ("850k", "1.2M") and the ranking-strategy list -> GUI and CLI must show identical values.
+- **Agent calls off the Swing thread** -> chat and Compare run in `SwingWorker`s and observer
+  updates are marshalled back with `invokeLater` -> the window stays responsive during LLM calls.
+- **RealEstateService** -> added `availableNeighborhoods()` and `availableFeatures()` -> the
+  criteria panel lists what exists in the loaded data.

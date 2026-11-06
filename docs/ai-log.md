@@ -10,6 +10,7 @@ Running log for report Section 5. Add a row per session.
 | 2026-10-30 | Claude (claude.ai) | Claude Opus 5.5 | F04: RankingStrategy + 4 strategies (Strategy); F06: MortgageCalculator, MortgageTerms, MortgageResult; F07: assess, maxSupportablePrice, FinancialProfile, AffordabilityResult, Verdict; tests | | |
 | 2026-10-30 | Claude (claude.ai) | Claude Opus 5.5 | F09: Shortlist + Command classes; PreferenceStore; RealEstateService facade + SearchObserver; LLMClient/MockLLMClient/AnthropicLLMClient (Adapter) + EnvConfig; F02: RequirementExtractor; tests | | |
 | 2026-11-04 | Claude (claude.ai) | Claude Opus 5.5 | F02/F10: MemoryManager; tool framework + SearchTool/MortgageTool; F08: ComparisonTool; AdvisorAgent (LLM tool selection, grounding check, regeneration); facade askAgent/compare; soft-preference fix; tests | | |
+| 2026-11-05 | Claude (claude.ai) | Claude Opus 5.5 | CLI (CLIRenderer, Main); Swing GUI (MainWindow, CriteriaPanel, ChatPanel, ShortlistPanel, detail/comparison/profile dialogs); rendered screenshots to check layout; tests | | |
 
 ## Representative interactions
 
@@ -32,3 +33,7 @@ Running log for report Section 5. Add a row per session.
 - 2026-11-04: Chose to keep all mortgage figures out of generated text: the agent formats
   payment, interest and verdict in code from MortgageCalculator output, and the model is only
   used for tool choice and trade-off explanations, which are checked for invented listing IDs.
+- 2026-11-05: Reviewed rendered screenshots of the first GUI pass and rejected the layout: the
+  criteria panel was squeezed below its natural width, so "Townhouse" was cut off and the
+  neighborhood/feature lists collapsed to one row. Fixed the panel sizing before moving on.
+  Also caught that the comparison table showed whole numbers as "3.0" and "1,506.0".

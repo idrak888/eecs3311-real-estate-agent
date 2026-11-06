@@ -45,11 +45,55 @@ src/main/java/ca/yorku/realestate/
     tool/        AgentTool, ToolManager, SearchTool, MortgageTool, ComparisonTool
     llm/         LLMClient (Adapter): AnthropicLLMClient, MockLLMClient
   config/        EnvConfig (.env loading)
-  app/           LlmConnectionCheck (one-off live API check)
+  ui/            Formats (shared formatting)
+    cli/         CLIRenderer
+    gui/         MainWindow, CriteriaPanel, ChatPanel, ShortlistPanel, detail/comparison dialogs
+  app/           Main (entry point), LlmConnectionCheck (one-off live API check)
   persistence/   ListingRepository, ListingImporter, LoadSummary, PreferenceStore
     parser/      ListingParser (Factory Method): JSON and CSV parsers
 src/main/resources/data/
   listings.json  60 sample listings (same data also as listings.csv)
 ```
 
-GUI and CLI launch instructions will be added as those layers are implemented.
+## Running the application
+
+Both frontends use the same `RealEstateService` facade, so they behave identically.
+
+**From Eclipse:** open `src/main/java/ca/yorku/realestate/app/Main.java` and choose
+Run As > Java Application (GUI). For the CLI, add `--cli` under Run Configurations > Arguments.
+Run from the project root so `.env` is found.
+
+**From a terminal:**
+
+```bash
+mvn compile exec:java                      # GUI
+mvn compile exec:java -Dexec.args="--cli"  # CLI
+```
+
+Options: `--cli`, and `--data path/to/listings.csv` to load a different file.
+
+Without an API key, everything works except the chat/`ask` command, which reports that the
+assistant is unavailable.
+
+### GUI
+
+- **Left:** structured search criteria and ranking. The panel also fills in automatically when
+  the advisor interprets a chat message.
+- **Centre:** results (double-click for details, mortgage and affordability) and advisor chat.
+- **Right:** shortlist. Select 2-4 and press Compare. Edit > Undo reverses shortlist changes.
+- **Profile > Financial profile...** sets income, monthly debt and down payment for affordability.
+
+### CLI
+
+```
+search --max-price 900k --beds 3 --type house --area Vaughan --feature garage --sort value
+ask 3 bedroom house under 1.5M, maybe in Vaughan or Woodbridge
+show L020
+mortgage L020 --down 150k --rate 4.8 --years 25
+profile 150k 600 160k
+afford L020
+shortlist add L020
+compare L020 L009 L036
+undo
+help
+```

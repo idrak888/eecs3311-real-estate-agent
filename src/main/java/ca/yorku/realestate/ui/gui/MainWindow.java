@@ -1,11 +1,13 @@
 package ca.yorku.realestate.ui.gui;
 
+import ca.yorku.realestate.agent.AgentResponse;
 import ca.yorku.realestate.domain.Listing;
 import ca.yorku.realestate.domain.SearchCriteria;
 import ca.yorku.realestate.persistence.LoadSummary;
 import ca.yorku.realestate.service.InvalidCriteriaException;
 import ca.yorku.realestate.service.RealEstateService;
 import ca.yorku.realestate.service.SearchObserver;
+import ca.yorku.realestate.domain.shortlist.Shortlist;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
@@ -43,6 +45,8 @@ public final class MainWindow extends JFrame implements SearchObserver {
     private final JTable resultsTable = new JTable(resultsModel);
     private final JLabel resultCount = new JLabel(" ");
     private final ChatPanel chatPanel;
+    private final ShortlistPanel shortlistPanel = new ShortlistPanel();
+    private final JMenuItem undoItem = new JMenuItem("Undo");
     private final JLabel status = new JLabel(" ");
     private String loadStatus = "";
     private final boolean aiConfigured;
@@ -67,6 +71,7 @@ public final class MainWindow extends JFrame implements SearchObserver {
         split.setResizeWeight(0.55);
         split.setBorder(null);
         add(split, BorderLayout.CENTER);
+        add(shortlistPanel, BorderLayout.EAST);
         add(buildStatusBar(), BorderLayout.SOUTH);
 
         criteriaPanel.setVocabulary(service.availableNeighborhoods(), service.availableFeatures());
@@ -76,11 +81,25 @@ public final class MainWindow extends JFrame implements SearchObserver {
             runSearch();
         });
         criteriaPanel.onRankingChanged(service::setRankingStrategy);
+        shortlistPanel.onDetails(this::openDetails);
+        shortlistPanel.onRemove(items -> items.forEach(l -> service.removeFromShortlist(l.getId())));
+        shortlistPanel.onCompare(this::compare);
+        shortlistPanel.onUndo(this::undo);
+        resultsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int row = resultsTable.rowAtPoint(e.getPoint());
+                if (e.getClickCount() == 2 && row >= 0) {
+                    openDetails(resultsModel.getListingAt(row));
+                }
+            }
+        });
 
         setLoadStatus(summary);
         service.addObserver(this);
         onCriteriaChanged(service.getCriteria());
         onResultsChanged(service.getResults());
+        onShortlistChanged(service.getShortlist());
         pack();
         setLocationRelativeTo(null);
     }
@@ -115,6 +134,20 @@ public final class MainWindow extends JFrame implements SearchObserver {
         file.addSeparator();
         file.add(exit);
         bar.add(file);
+
+        JMenu edit = new JMenu("Edit");
+        undoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z,
+                java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        undoItem.addActionListener(e -> undo());
+        edit.add(undoItem);
+        bar.add(edit);
+
+        JMenu profile = new JMenu("Profile");
+        JMenuItem finances = new JMenuItem("Financial profile...");
+        finances.addActionListener(e -> ProfileDialog.ask(this, service.getFinancialProfile())
+                .ifPresent(service::setFinancialProfile));
+        profile.add(finances);
+        bar.add(profile);
         return bar;
     }
 
@@ -127,6 +160,7 @@ public final class MainWindow extends JFrame implements SearchObserver {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(8, 4, 4, 8));
         resultCount.setBorder(BorderFactory.createEmptyBorder(0, 2, 6, 0));
+        resultsTable.setToolTipText("Double-click a listing for details, mortgage and affordability");
         panel.add(resultCount, BorderLayout.NORTH);
         panel.add(new JScrollPane(resultsTable), BorderLayout.CENTER);
         return panel;
@@ -197,9 +231,48 @@ public final class MainWindow extends JFrame implements SearchObserver {
         status.setText(loadStatus + "   |   AI assistant: " + (aiConfigured ? "ready" : "not configured (no API key in .env)"));
     }
 
-    /** After each chat reply; later features (comparison view) hook in here. */
-    private void onAgentResponse(ca.yorku.realestate.agent.AgentResponse response) {
-        // Results and criteria already arrived through the observer methods.
+    /** After each chat reply: results already arrived through the observer; open any comparison. */
+    private void onAgentResponse(AgentResponse response) {
+        if (response.getComparison().isPresent()) {
+            new ComparisonDialog(this, response).setVisible(true);
+        }
+    }
+
+    private void openDetails(Listing listing) {
+        new ListingDetailDialog(this, service, listing).setVisible(true);
+    }
+
+    private void compare(List<Listing> listings) {
+        List<String> ids = listings.stream().map(Listing::getId).toList();
+        setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
+        new javax.swing.SwingWorker<AgentResponse, Void>() {
+            @Override
+            protected AgentResponse doInBackground() {
+                return service.compare(ids);
+            }
+
+            @Override
+            protected void done() {
+                setCursor(java.awt.Cursor.getDefaultCursor());
+                try {
+                    AgentResponse r = get();
+                    if (r.getComparison().isPresent()) {
+                        new ComparisonDialog(MainWindow.this, r).setVisible(true);
+                    } else {
+                        showError("Comparison unavailable", r.getMessage());
+                    }
+                } catch (Exception e) {
+                    showError("Comparison failed", String.valueOf(e.getCause() == null ? e : e.getCause()));
+                }
+            }
+        }.execute();
+    }
+
+    private void undo() {
+        java.util.Optional<String> undone = service.undo();
+        if (undone.isEmpty()) {
+            java.awt.Toolkit.getDefaultToolkit().beep();
+        }
     }
 
     // ---- observer ----
@@ -216,6 +289,15 @@ public final class MainWindow extends JFrame implements SearchObserver {
     @Override
     public void onCriteriaChanged(SearchCriteria criteria) {
         onEdt(() -> criteriaPanel.showCriteria(criteria));
+    }
+
+    @Override
+    public void onShortlistChanged(Shortlist shortlist) {
+        onEdt(() -> {
+            shortlistPanel.setListings(service.getShortlistedListings(), service.canUndo());
+            undoItem.setEnabled(service.canUndo());
+            undoItem.setText(service.canUndo() ? "Undo" : "Undo (nothing to undo)");
+        });
     }
 
     @Override

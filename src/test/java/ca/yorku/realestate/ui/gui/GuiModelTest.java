@@ -160,4 +160,70 @@ class GuiModelTest {
         assertTrue(t.contains("Advisor: Here you go."));
         assertTrue(t.contains("Explanation unavailable"));
     }
+
+    // ---- profile, shortlist, comparison ----
+
+    @Test
+    void profileParsingAcceptsShorthandAndBlankDebt() {
+        ca.yorku.realestate.domain.finance.FinancialProfile p = ProfileDialog.parse("150k", "", "$160,000");
+        assertEquals(150_000, p.getAnnualIncome(), 1e-9);
+        assertEquals(0, p.getMonthlyDebt(), 1e-9);
+        assertEquals(160_000, p.getDownPayment(), 1e-9);
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ProfileDialog.parse("", "0", "1"));
+        assertTrue(e.getMessage().startsWith("Annual income"));
+        assertThrows(IllegalArgumentException.class, () -> ProfileDialog.parse("1", "-5", "1"));
+    }
+
+    @Test
+    void shortlistCompareEnabledOnlyForTwoToFour() {
+        ShortlistPanel p = new ShortlistPanel();
+        List<Listing> five = new java.util.ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            five.add(TestData.listing("S" + i, 100_000 * i, 2, 1, 900, PropertyType.CONDO, "X", 2010));
+        }
+        p.setListings(five, true);
+        assertTrue(p.undoEnabled());
+        p.listView().setSelectedIndices(new int[] {0});
+        assertFalse(p.compareEnabled());
+        p.listView().setSelectedIndices(new int[] {0, 1});
+        assertTrue(p.compareEnabled());
+        p.listView().setSelectedIndices(new int[] {0, 1, 2, 3});
+        assertTrue(p.compareEnabled());
+        p.listView().setSelectedIndices(new int[] {0, 1, 2, 3, 4});
+        assertFalse(p.compareEnabled(), "more than four is not allowed");
+        p.setListings(List.of(), false);
+        assertFalse(p.undoEnabled());
+    }
+
+    @Test
+    void comparisonModelMarksLeadersAndSplitsSummary() {
+        ca.yorku.realestate.persistence.ListingRepository repo = TestData.repositoryOf(
+                TestData.listing("A", 600_000, 2, 1, 900, PropertyType.CONDO, "X", 1990),
+                TestData.listing("B", 900_000, 4, 3, 2000, PropertyType.HOUSE, "Y", 2020));
+        ca.yorku.realestate.agent.tool.ToolResult r = new ca.yorku.realestate.agent.tool.ComparisonTool(repo,
+                new ca.yorku.realestate.domain.finance.MortgageCalculator(), 2026)
+                .execute(ca.yorku.realestate.agent.tool.ToolRequest.empty().with("listingIds", List.of("A", "B")));
+        ca.yorku.realestate.agent.tool.ComparisonResult c = r.getData("comparison",
+                ca.yorku.realestate.agent.tool.ComparisonResult.class).orElseThrow();
+        ComparisonDialog.Model m = new ComparisonDialog.Model(c);
+        assertEquals(3, m.getColumnCount());
+        assertEquals("A", m.getColumnName(1));
+        assertEquals("Price", m.getValueAt(0, 0));
+        assertEquals(ComparisonDialog.LEADER_MARK + "$600,000", m.getValueAt(0, 1));
+        assertEquals("$900,000", m.getValueAt(0, 2));
+        assertTrue(m.isLeader(0, 1));
+        assertFalse(m.isLeader(0, 0));
+
+        ca.yorku.realestate.agent.AgentResponse withSummary = ca.yorku.realestate.agent.AgentResponse.builder()
+                .message("Comparing A, B.\n\nA is cheaper; B is bigger.").comparison(c).build();
+        assertEquals("A is cheaper; B is bigger.", ComparisonDialog.summaryText(withSummary));
+        assertEquals("", ComparisonDialog.summaryText(ca.yorku.realestate.agent.AgentResponse.builder()
+                .message("Comparing A, B.").comparison(c).build()));
+    }
+
+    @Test
+    void verdictColorsDiffer() {
+        assertFalse(ListingDetailDialog.color(ca.yorku.realestate.domain.finance.Verdict.AFFORDABLE)
+                .equals(ListingDetailDialog.color(ca.yorku.realestate.domain.finance.Verdict.UNAFFORDABLE)));
+    }
 }
