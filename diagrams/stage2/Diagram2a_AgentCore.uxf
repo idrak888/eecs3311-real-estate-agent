@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>40</y>
+      <w>430</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>RealEstateService
+--
++askAgent(String): AgentResponse
++compare(List&lt;String&gt;): AgentResponse
++create(PreferenceStore, LLMClient): RealEstateService
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>200</y>
+      <w>240</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Context only.
+Full definition in Diagram 1a.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>40</y>
+      <w>490</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>AdvisorAgent
+--
+-llm: LLMClient
+-extractor: RequirementExtractor
+-tools: ToolManager
+-memory: MemoryManager
+-profile: FinancialProfile
+-rankingStrategy: RankingStrategy
+--
++handleQuery(String): AgentResponse
++compareProperties(List&lt;String&gt;): AgentResponse
++explainResults(List&lt;Listing&gt;, SearchCriteria): String
++validateGrounding(String, List&lt;Listing&gt;): boolean
++setFinancialProfile(FinancialProfile): void
++setRankingStrategy(RankingStrategy): void
+~selectTool(String): Decision
+-handleSearch / handleMortgage / handleCompare / handleDirect
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>60</y>
+      <w>110</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+agent
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1180</x>
+      <y>40</y>
+      <w>360</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;nested&gt;&gt;
+Decision
+--
+tool: String  {search|mortgage|compare|none}
+listingIds: List&lt;String&gt;
+downPayment, annualRate: Double
+years: Integer
+reply: String
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>70</y>
+      <w>150</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+creates
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1180</x>
+      <y>260</y>
+      <w>290</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>AgentResponse
+--
+-message: String
+-listings: List&lt;Listing&gt;
+-criteria: SearchCriteria
+-comparison: ComparisonResult
+-mortgage: MortgageResult
+-affordability: AffordabilityResult
+-toolsUsed: List&lt;String&gt;
+-notice: String
+-aiAvailable: boolean
+--
++builder(): Builder
++unavailable(String): AgentResponse
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>290</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+returns
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;75.0;10.0;75.0;30.0;140.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>520</y>
+      <w>490</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>RequirementExtractor
+--
++SCHEMA: String  {JSON Schema}
+-llm: LLMClient
+-knownNeighborhoods, knownFeatures: Set&lt;String&gt;
+--
++extract(String): SearchCriteria
++extractRequest(String): ExtractedRequest
++withVocabulary(Collection, Collection): RequirementExtractor
+-buildPrompt(String): String
+-buildStrictPrompt(String, String): String
+-parseRequest(String): ExtractedRequest
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>860</y>
+      <w>220</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;record&gt;&gt;
+ExtractedRequest
+--
+required: SearchCriteria
+preferred: SearchCriteria
+--
++isEmpty(): boolean
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>860</y>
+      <w>180</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>ExtractionException
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>520</y>
+      <w>400</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>MemoryManager
+--
+-history: List&lt;ConversationTurn&gt;
+-criteria: SearchCriteria
+-preferences: SearchCriteria
+-lastResults: List&lt;Listing&gt;
++MAX_TURNS: int = 20
+--
++addTurn(ConversationTurn): void
++mergeCriteria(SearchCriteria): SearchCriteria
++setCriteria(SearchCriteria): void
++mergePreferences(SearchCriteria): SearchCriteria
++getRankingCriteria(): SearchCriteria
++setLastResults(List&lt;Listing&gt;): void
++getContext(int): String
++clear(): void
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>940</y>
+      <w>200</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>ConversationTurn
+--
+-userMessage: String
+-agentResponse: String
+-timestamp: Instant
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>230</x>
+      <y>330</y>
+      <w>400</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+extractor
+fontsize=12</panel_attributes>
+    <additional_attributes>390.0;10.0;390.0;140.0;10.0;140.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>330</y>
+      <w>20</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+memory
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>110</x>
+      <y>720</y>
+      <w>20</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+returns
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>410</x>
+      <y>720</y>
+      <w>20</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+throws
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>790</y>
+      <w>20</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+0..20
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1240</x>
+      <y>640</y>
+      <w>350</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+LLMClient
+--
++complete(String): String
++completeStructured(String, String): String
++isAvailable(): boolean
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1100</x>
+      <y>880</y>
+      <w>350</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>AnthropicLLMClient
+--
+-apiKey: String
+-model: String
+-maxTokens: int
+-transport: Transport
+-retries: int = 1
+--
++fromConfig(EnvConfig): AnthropicLLMClient
++getInputTokens(): long
++getOutputTokens(): long
+~isTemporary(int): boolean
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>880</y>
+      <w>290</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>MockLLMClient
+--
+-responses: Map&lt;String, String&gt;
+--
++setResponse(String, String): void
++setDefaultResponse(String): void
++setAvailable(boolean): void
++getPrompts(): List&lt;String&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1265</x>
+      <y>740</y>
+      <w>160</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>150.0;10.0;150.0;100.0;10.0;100.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1405</x>
+      <y>740</y>
+      <w>250</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;240.0;100.0;240.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1100</x>
+      <y>1160</y>
+      <w>320</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Transport
+--
++post(String, Map, String): HttpResult
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>1160</y>
+      <w>230</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>EnvConfig
+--
++load(): EnvConfig
++apiKey(): Optional&lt;String&gt;
++model(): String
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1680</x>
+      <y>650</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>LLMException
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1240</x>
+      <y>1080</y>
+      <w>20</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+sends via
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1440</x>
+      <y>1030</y>
+      <w>70</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+reads .env
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;35.0;10.0;35.0;160.0;60.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>310</y>
+      <w>210</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+llm
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;370.0;200.0;370.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1580</x>
+      <y>650</y>
+      <w>110</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+throws
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1530</x>
+      <y>260</y>
+      <w>290</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Adapter.
+The agent depends only on LLMClient;
+AnthropicLLMClient adapts the Messages
+API, MockLLMClient makes the agent
+testable offline. Temporary failures
+(429, 5xx, 529, timeouts) retried once.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>1000</y>
+      <w>280</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Grounding: every listing ID in an
+explanation must be one the tools
+returned; otherwise regenerate once,
+then show results without narrative.
+Figures are formatted in code.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>1150</y>
+      <w>260</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Green = added or substantially
+changed in Stage 2
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+</diagram>

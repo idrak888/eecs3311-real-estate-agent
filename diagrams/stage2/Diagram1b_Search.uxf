@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>40</y>
+      <w>430</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>SearchCriteriaBuilder
+--
++withMinPrice(Double): SearchCriteriaBuilder
++withMaxPrice(Double): SearchCriteriaBuilder
++withMinBedrooms(Integer): SearchCriteriaBuilder
++withMinBathrooms(Integer): SearchCriteriaBuilder
++withType(PropertyType): SearchCriteriaBuilder
++withNeighborhood(String): SearchCriteriaBuilder
++withFeature(String): SearchCriteriaBuilder
++clearTypes() / clearNeighborhoods() / clearFeatures()
++from(SearchCriteria): SearchCriteriaBuilder
++build(): SearchCriteria
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>40</y>
+      <w>320</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>SearchCriteria
+--
+-minPrice: Double
+-maxPrice: Double
+-minBedrooms: Integer
+-minBathrooms: Integer
+-types: Set&lt;PropertyType&gt;
+-neighborhoods: Set&lt;String&gt;
+-requiredFeatures: Set&lt;String&gt;
+--
++toFilter(): Filter
++merge(SearchCriteria): SearchCriteria
++isValid(): boolean
++validationErrors(): List&lt;String&gt;
++isEmpty(): boolean
++describe(): String
++empty(): SearchCriteria
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>40</y>
+      <w>350</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>RealEstateService
+--
++search(SearchCriteria): List&lt;Listing&gt;
++setRankingStrategy(RankingStrategy): void
++diagnoseNoResults(): Optional&lt;Diagnosis&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>290</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Context only.
+Full definition in
+Diagram 1a.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>140</y>
+      <w>110</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+creates
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>57</y>
+      <w>200</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>190.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>230</y>
+      <w>400</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ZeroMatchAnalyzer
+--
++analyze(SearchCriteria, List&lt;Listing&gt;): Diagnosis
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>360</y>
+      <w>330</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;record&gt;&gt;
+Diagnosis
+--
+-relaxations: List&lt;Relaxation&gt;
+--
++mostRestrictive(): Optional&lt;Relaxation&gt;
++message(): String
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>360</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;record&gt;&gt;
+Relaxation
+--
+-requirement: String
+-relaxed: SearchCriteria
+-matches: int
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>120</y>
+      <w>20</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+uses
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>280</y>
+      <w>20</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+returns
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1380</x>
+      <y>398</y>
+      <w>130</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>560</y>
+      <w>490</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+RankingStrategy
+--
++score(Listing, SearchCriteria): double
++getName(): String
++rank(List&lt;Listing&gt;, SearchCriteria): List&lt;Listing&gt;  {default}
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>740</y>
+      <w>200</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>PriceAscendingStrategy
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1210</x>
+      <y>740</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>PriceDescendingStrategy
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1450</x>
+      <y>740</y>
+      <w>180</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>ValuePerSqFtStrategy
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1660</x>
+      <y>740</y>
+      <w>160</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>BestMatchStrategy
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1070</x>
+      <y>660</y>
+      <w>245</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>235.0;10.0;235.0;40.0;10.0;40.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1295</x>
+      <y>660</y>
+      <w>30</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;20.0;40.0;20.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1295</x>
+      <y>660</y>
+      <w>255</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;245.0;40.0;245.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1295</x>
+      <y>660</y>
+      <w>455</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;445.0;40.0;445.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1400</x>
+      <y>84</y>
+      <w>350</w>
+      <h>486</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+active strategy
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;340.0;10.0;340.0;436.0;110.0;436.0;110.0;476.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1640</x>
+      <y>560</y>
+      <w>250</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Strategy.
+Ranking is swapped at runtime;
+the sort (score desc, ID asc)
+lives once in rank().
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1660</x>
+      <y>820</y>
+      <w>300</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>BestMatchStrategy averages per-criterion
+fit in [0,1] with partial credit for
+near misses; soft preferences rank
+without filtering.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>680</y>
+      <w>230</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Filter
+--
++matches(Listing): boolean
++describe(): String
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>920</y>
+      <w>240</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+/CompositeFilter/
+--
+-children: List&lt;Filter&gt;
+--
++add(Filter): void
++getChildren(): List&lt;Filter&gt;
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>620</x>
+      <y>1180</y>
+      <w>280</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>AndFilter
+--
++matches(Listing): boolean  {all}
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>920</x>
+      <y>1180</y>
+      <w>280</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>OrFilter
+--
++matches(Listing): boolean  {any}
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>330</y>
+      <w>20</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+builds
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>860</y>
+      <w>240</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>PriceFilter
+--
+-min: double
+-max: double
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>960</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>BedroomFilter
+--
+-minimum: int
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>1060</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>BathroomFilter
+--
+-minimum: int
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>860</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>TypeFilter
+--
+-allowed: Set&lt;PropertyType&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>960</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NeighborhoodFilter
+--
+-allowed: Set&lt;String&gt;
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>1060</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>FeatureFilter
+--
+-required: Set&lt;String&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>760</y>
+      <w>310</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>300.0;10.0;300.0;40.0;10.0;40.0;10.0;330.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>890</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>980</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>1080</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>880</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>980</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>1080</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>760</y>
+      <w>62</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;52.0;100.0;52.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>1030</y>
+      <w>80</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+fontsize=12</panel_attributes>
+    <additional_attributes>70.0;10.0;70.0;90.0;10.0;90.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>1030</y>
+      <w>260</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;250.0;90.0;250.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>715</y>
+      <w>195</w>
+      <h>255</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+children
+fontsize=12</panel_attributes>
+    <additional_attributes>160.0;245.0;185.0;245.0;185.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>1300</y>
+      <w>260</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Inverted ranges are rejected by
+validationErrors() before toFilter().
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>680</y>
+      <w>300</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Composite.
+Leaves and composites share Filter,
+so the repository evaluates any tree
+with one matches() call.
+Empty AndFilter matches everything.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>1200</y>
+      <w>260</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Green = added or substantially
+changed in Stage 2
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+</diagram>

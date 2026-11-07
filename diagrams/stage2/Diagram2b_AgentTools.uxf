@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>40</y>
+      <w>290</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>AdvisorAgent
+--
+~selectTool(String): Decision
++handleQuery(String): AgentResponse
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>170</y>
+      <w>240</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Context only.
+Full definition in Diagram 2a.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>40</y>
+      <w>340</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>ToolManager
+--
+-tools: Map&lt;String, AgentTool&gt;
+--
++register(AgentTool): void
++execute(String, ToolRequest): ToolResult
++get(String): Optional&lt;AgentTool&gt;
++listAvailable(): List&lt;String&gt;
++describeTools(): String
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>60</y>
+      <w>250</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+tools
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>590</x>
+      <y>340</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+AgentTool
+--
++getName(): String
++getDescription(): String
++execute(ToolRequest): ToolResult
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>190</y>
+      <w>20</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=*
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1100</x>
+      <y>40</y>
+      <w>400</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>ToolRequest
+--
+-parameters: Map&lt;String, Object&gt;
+--
++of(Map): ToolRequest
++with(String, Object): ToolRequest
++get(String): Object
++get(String, Class&lt;T&gt;): Optional&lt;T&gt;
++getString / getDouble / getInt(String): Optional
++getStringList(String): List&lt;String&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1100</x>
+      <y>340</y>
+      <w>330</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>ToolResult
+--
+-success: boolean
+-listings: List&lt;Listing&gt;
+-data: Map&lt;String, Object&gt;
+-errorMessage: String
+--
++success(List&lt;Listing&gt;, Map): ToolResult
++failure(String): ToolResult
++getData(String, Class&lt;T&gt;): Optional&lt;T&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>890</x>
+      <y>80</y>
+      <w>220</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+passes
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>860</x>
+      <y>390</y>
+      <w>250</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+returns
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>640</y>
+      <w>350</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>SearchTool
+--
+-repository: ListingRepository
+--
++execute(ToolRequest): ToolResult
+params: criteria, rankingCriteria, strategy
+data: count, total, diagnosis
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>640</y>
+      <w>300</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>MortgageTool
+--
+-repository: ListingRepository
+-calculator: MortgageCalculator
+--
++execute(ToolRequest): ToolResult
+params: listingId, downPayment,
+  annualRate, years, profile
+data: mortgage, terms, affordability
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1040</x>
+      <y>640</y>
+      <w>370</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>ComparisonTool
+--
+-repository: ListingRepository
+-calculator: MortgageCalculator
+-currentYear: int
++MIN_LISTINGS = 2, MAX_LISTINGS = 4
+--
++execute(ToolRequest): ToolResult
+~buildMatrix(List&lt;Listing&gt;): ComparisonResult
+data: comparison, capped
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>205</x>
+      <y>440</y>
+      <w>535</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>525.0;10.0;525.0;160.0;10.0;160.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>440</y>
+      <w>60</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>50.0;10.0;50.0;160.0;10.0;160.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>440</y>
+      <w>515</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0;505.0;160.0;505.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1040</x>
+      <y>1000</y>
+      <w>320</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>ComparisonResult
+--
+-listings: List&lt;Listing&gt;
+-attributes: Map&lt;String, List&lt;Object&gt;&gt;
+-leaders: Map&lt;String, String&gt;
+--
++getAttributeNames(): List&lt;String&gt;
++getAttribute(String): List&lt;Object&gt;
++getLeader(String): String
++isNumeric(String): boolean
++toTable(): String
++format(String, Object): String
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1180</x>
+      <y>800</y>
+      <w>20</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+builds
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>1000</y>
+      <w>300</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>ListingRepository
+--
++findMatching(Filter): List&lt;Listing&gt;
++findById(String): Optional&lt;Listing&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>1000</y>
+      <w>440</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>MortgageCalculator
+--
++calculate(double, MortgageTerms): MortgageResult
++assess(Listing, FinancialProfile): AffordabilityResult
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>1180</y>
+      <w>400</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ZeroMatchAnalyzer
+--
++analyze(SearchCriteria, List&lt;Listing&gt;): Diagnosis
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>130</x>
+      <y>750</y>
+      <w>20</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>750</y>
+      <w>130</w>
+      <h>470</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+if empty
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;210.0;120.0;210.0;120.0;460.0;110.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>790</y>
+      <w>320</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>310.0;10.0;310.0;150.0;10.0;150.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>790</y>
+      <w>20</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>800</y>
+      <w>180</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+fontsize=12</panel_attributes>
+    <additional_attributes>170.0;10.0;170.0;160.0;10.0;160.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>40</x>
+      <y>340</y>
+      <w>290</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Tools are deterministic: they compute
+or retrieve; the model only chooses a
+tool and explains its output. Expected
+problems return ToolResult.failure,
+not exceptions.
+bg=yellow
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1500</x>
+      <y>1000</y>
+      <w>280</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Green = added or substantially
+changed in Stage 2.
+All tool classes existed in Stage 1;
+parameters and data keys are new.
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+</diagram>
