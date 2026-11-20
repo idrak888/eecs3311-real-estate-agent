@@ -12,6 +12,7 @@ Running log for report Section 5. Add a row per session.
 | 2026-11-04 | Claude (claude.ai) | Claude Opus 5.5 | F02/F10: MemoryManager; tool framework + SearchTool/MortgageTool; F08: ComparisonTool; AdvisorAgent (LLM tool selection, grounding check, regeneration); facade askAgent/compare; soft-preference fix; tests | | |
 | 2026-11-05 | Claude (claude.ai) | Claude Opus 5.5 | CLI (CLIRenderer, Main); Swing GUI (MainWindow, CriteriaPanel, ChatPanel, ShortlistPanel, detail/comparison/profile dialogs); rendered screenshots to check layout; tests | | |
 | 2026-11-06 | Claude (claude.ai) | Claude Opus 5.5 | F02/F03 error flows: ZeroMatchAnalyzer (most restrictive criterion) in tool, agent, CLI, GUI; LLM retry on temporary failures; live AI status; tests | | |
+| 2026-11-20 | Claude (claude.ai) | Claude Opus 5.5 | CLI input from file, stdin and one-shot commands (LaunchOptions, CLIRenderer); report screenshots; tests | | |
 
 ## Representative interactions
 
@@ -42,3 +43,8 @@ Running log for report Section 5. Add a row per session.
   generated: the analyzer re-runs the search with each requirement removed, and the model only
   phrases advice from those counts. Verified the expected counts for the Vaughan query (area 3,
   garage 3, price/beds/type 1 each) independently in Python before writing the test.
+- 2026-11-20: Instructor asked for a CLI that accepts input from a file or standard input, and for
+  screenshots in the report. Asked Claude to add file and one-shot input; reviewed the design
+  (options parsed in a separate, tested `LaunchOptions` class; file mode echoes commands but the
+  keyboard mode does not, so Eclipse's console is not doubled). Ran the sample command file end
+  to end before committing.

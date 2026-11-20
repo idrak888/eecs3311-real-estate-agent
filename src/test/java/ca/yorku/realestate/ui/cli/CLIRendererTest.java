@@ -213,6 +213,32 @@ class CLIRendererTest {
     }
 
     @Test
+    void commandFileIsEchoedAndSkipsComments() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        String file = "# a comment\n\nsearch --beds 5\nshow L999\n";
+        new CLIRenderer(service, new BufferedReader(new StringReader(file)),
+                new PrintStream(out, true, StandardCharsets.UTF_8)).run(true);
+        String text = out.toString(StandardCharsets.UTF_8);
+        assertTrue(text.contains("> search --beds 5\n"), "command echoed after the prompt");
+        assertTrue(text.contains("bedrooms >= 5"));
+        assertTrue(text.contains("Error:"), "error case in a file does not stop the run: " + text);
+        assertFalse(text.contains("Unknown command '#"), "comments are ignored");
+    }
+
+    @Test
+    void oneShotCommandsRunInOrderAndStopAtQuit() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        new CLIRenderer(service, new BufferedReader(new StringReader("")),
+                new PrintStream(out, true, StandardCharsets.UTF_8))
+                .runCommands(List.of("search --beds 5", "quit", "show L001"));
+        String text = out.toString(StandardCharsets.UTF_8);
+        assertTrue(text.startsWith("> search --beds 5\n"), text);
+        assertTrue(text.indexOf("bedrooms >= 5") < text.indexOf("Goodbye."));
+        assertFalse(text.contains("> show L001"), "nothing runs after quit");
+        assertFalse(text.contains("Type 'help'"), "no interactive banner in one-shot mode");
+    }
+
+    @Test
     void persistenceWarningIsPrinted() throws Exception {
         Path notADir = Files.createTempFile("blocked", ".txt");
         notADir.toFile().deleteOnExit();

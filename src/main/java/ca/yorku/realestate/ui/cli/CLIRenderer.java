@@ -49,26 +49,64 @@ public final class CLIRenderer implements SearchObserver {
         service.addObserver(this);
     }
 
-    /** Reads commands until {@code quit} or end of input. */
+    /** Reads commands interactively until {@code quit} or end of input. */
     public void run() throws IOException {
+        run(false);
+    }
+
+    /**
+     * Reads commands from the reader until {@code quit} or end of input.
+     *
+     * @param echoInput print each command after the prompt. Used when input comes from a file or a
+     *     pipe rather than a keyboard, so the output reads as a complete transcript.
+     */
+    public void run(boolean echoInput) throws IOException {
         running = true;
         out.println("Real Estate Advisor (CLI). Type 'help' for commands.");
         while (running) {
-            out.print("> ");
-            out.flush();
+            if (!echoInput) {
+                out.print("> ");
+                out.flush();
+            }
             String line = in.readLine();
             if (line == null) {
                 break;
+            }
+            if (echoInput) {
+                String trimmed = line.trim();
+                if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                    continue;
+                }
+                out.println("> " + trimmed);
             }
             execute(line);
         }
         service.removeObserver(this);
     }
 
-    /** Runs one command line. Public so tests and scripted demos can drive the CLI. */
+    /**
+     * Runs a fixed list of commands (from {@code --command} arguments) and stops, without a
+     * banner, so the output can be read by another program.
+     */
+    public void runCommands(List<String> commands) {
+        running = true;
+        for (String command : commands) {
+            if (!running) {
+                break;
+            }
+            out.println("> " + command);
+            execute(command);
+        }
+        service.removeObserver(this);
+    }
+
+    /**
+     * Runs one command line. Public so tests and scripted demos can drive the CLI. Blank lines and
+     * lines starting with {@code #} (comments in command files) are ignored.
+     */
     public void execute(String line) {
         String trimmed = line == null ? "" : line.trim();
-        if (trimmed.isEmpty()) {
+        if (trimmed.isEmpty() || trimmed.startsWith("#")) {
             return;
         }
         String[] parts = trimmed.split("\\s+", 2);

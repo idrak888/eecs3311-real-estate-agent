@@ -130,3 +130,8 @@ Format: Original design -> Implemented change -> Reason -> Impact
 - **AI status** -> GUI status bar shows "ready", "not configured" or "unavailable (last request
   failed)" from each agent response; the CLI suggests `search` when the assistant is down ->
   F02 requires telling the user structured search still works when the LLM fails.
+- **CLI input sources** (new `LaunchOptions`) -> besides the keyboard, the CLI reads piped or
+  redirected standard input, a command file (`--script FILE`, commands echoed, `#` comments) and
+  one-shot commands (`--command "..."`, repeatable); `CLIRenderer` gained `run(echoInput)` and
+  `runCommands()` -> course requirement (Nov 20) that the CLI accept input from a file or
+  standard input; also lets Stage 3 drive the agent non-interactively.

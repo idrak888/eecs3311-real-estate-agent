@@ -70,7 +70,24 @@ mvn compile exec:java                      # GUI
 mvn compile exec:java -Dexec.args="--cli"  # CLI
 ```
 
-Options: `--cli`, and `--data path/to/listings.csv` to load a different file.
+### CLI input methods
+
+The CLI reads commands from any of these sources:
+
+| Source | Command |
+|---|---|
+| Keyboard (interactive) | `mvn compile exec:java -Dexec.args="--cli"` |
+| Standard input (pipe or redirect) | `mvn -q compile exec:java -Dexec.args="--cli" < scripts/demo-commands.txt` |
+| Command file (echoes each command) | `mvn -q compile exec:java -Dexec.args="--script scripts/demo-commands.txt"` |
+| One-shot command(s), then exit | `mvn -q compile exec:java -Dexec.args="-c 'show L020' -c 'afford L020'"` |
+
+`--script` (or `-f`) and `--command` (or `-c`, repeatable) imply `--cli`. In a command file,
+blank lines and lines starting with `#` are ignored. `scripts/demo-commands.txt` exercises
+F02 to F10, including error cases. `--data path/to/listings.csv` loads a different listing
+file in any mode. From Eclipse, put the same options under Run Configurations > Arguments.
+
+Programs can also call the agent directly through the `RealEstateService` facade
+(`askAgent`, `search`, `compare`, `calculateMortgage`, ...), which is what the GUI and CLI use.
 
 Without an API key, everything works except the chat/`ask` command, which reports that the
 assistant is unavailable.

@@ -13,20 +13,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Application entry point. Starts the GUI by default, or the CLI with {@code --cli}. Both use the
  * same {@link RealEstateService}, wired with the agent and the API key from {@code .env}.
  *
- * <p>Options: {@code --cli}; {@code --data <file>} to load a different listing file.
+ * <p>Options are parsed by {@link LaunchOptions}: {@code --cli} reads commands from standard input
+ * (keyboard, pipe or redirect), {@code --script <file>} runs a command file, {@code --command
+ * "<cmd>"} runs one-shot commands, and {@code --data <file>} loads a different listing file.
  */
 public final class Main {
 
@@ -34,26 +36,53 @@ public final class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        List<String> a = Arrays.asList(args);
-        boolean cli = a.contains("--cli");
-        int dataIndex = a.indexOf("--data");
-        File data = dataIndex >= 0 && dataIndex + 1 < a.size() ? new File(a.get(dataIndex + 1)) : bundledListings();
+        LaunchOptions options;
+        try {
+            options = LaunchOptions.parse(args);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            System.exit(2);
+            return;
+        }
+        if (options.script().isPresent() && !options.script().get().isFile()) {
+            System.err.println("Command file not found: " + options.script().get());
+            System.exit(2);
+            return;
+        }
+        File data = options.data().orElse(null);
+        if (data == null) {
+            data = bundledListings();
+        }
 
         RealEstateService service = createService();
         LoadSummary summary = service.loadListings(data);
         List<String> warnings = service.restoreSession();
 
-        if (cli) {
+        if (options.cli()) {
             System.out.println(summary.describe());
             summary.rejections().forEach(r -> System.out.println("  rejected " + r));
             warnings.forEach(w -> System.out.println("Warning: " + w));
             if (!service.hasAgent() || !aiConfigured()) {
                 System.out.println("Note: no API key in .env; 'ask' is unavailable but every other command works.");
             }
-            new CLIRenderer(service, new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)),
-                    System.out).run();
+            runCli(service, options);
         } else {
             MainWindow.launch(service, summary, warnings, aiConfigured());
+        }
+    }
+
+    private static void runCli(RealEstateService service, LaunchOptions options) throws IOException {
+        if (!options.commands().isEmpty()) {
+            new CLIRenderer(service, new BufferedReader(new StringReader("")), System.out)
+                    .runCommands(options.commands());
+        } else if (options.script().isPresent()) {
+            try (BufferedReader file = Files.newBufferedReader(options.script().get().toPath(),
+                    StandardCharsets.UTF_8)) {
+                new CLIRenderer(service, file, System.out).run(true);
+            }
+        } else {
+            new CLIRenderer(service, new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)),
+                    System.out).run();
         }
     }
 

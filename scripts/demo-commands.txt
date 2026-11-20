@@ -1,0 +1,33 @@
+# Sample command file for the CLI. Run with:
+#   mvn compile exec:java -Dexec.args="--script scripts/demo-commands.txt"
+# Lines starting with # are comments.
+
+# F03/F04: structured search, ranked by value per square foot
+search --max-price 1.2M --beds 3 --type house --sort value
+
+# F03 error case: inverted price range
+search --min-price 900k --max-price 500k
+
+# F05: listing details, then an unknown ID
+show L020
+show L999
+
+# F06/F07: mortgage and affordability
+mortgage L020 --down 150k --rate 4.8 --years 25
+profile 180k 600 150k
+afford L020
+
+# F09: shortlist with undo
+shortlist add L020
+shortlist add L014
+shortlist add L033
+undo
+shortlist
+
+# F08: comparison
+compare L020 L014
+
+# F02/F10: natural-language request to the AI advisor (needs an API key in .env)
+ask 3 bedroom house under 1.5M with a garage, maybe in Vaughan or Woodbridge
+
+quit
