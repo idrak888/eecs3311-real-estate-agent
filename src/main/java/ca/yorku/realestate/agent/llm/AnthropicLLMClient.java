@@ -185,6 +185,9 @@ public class AnthropicLLMClient implements LLMClient {
     }
 
     private String parseText(String body) {
+        if (body == null || body.isBlank()) {
+            throw new LLMException("Language model returned an empty response");
+        }
         JsonNode root;
         try {
             root = mapper.readTree(body);
@@ -207,11 +210,15 @@ public class AnthropicLLMClient implements LLMClient {
         return text.toString();
     }
 
-    private String errorDetail(String body) {
+    /** The API's error message, if the body carries one; never fails on an empty or odd body. */
+    String errorDetail(String body) {
+        if (body == null || body.isBlank()) {
+            return "";
+        }
         try {
             String msg = mapper.readTree(body).path("error").path("message").asText("");
             return msg.isBlank() ? "" : ": " + msg;
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             return "";
         }
     }

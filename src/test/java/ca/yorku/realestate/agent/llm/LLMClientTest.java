@@ -144,6 +144,16 @@ class LLMClientTest {
     }
 
     @Test
+    void errorWithEmptyBodyIsStillAnLLMException() {
+        AnthropicLLMClient.Transport proxyRefuses = (url, h, body) -> new AnthropicLLMClient.HttpResult(403, null);
+        LLMException e = assertThrows(LLMException.class,
+                () -> new AnthropicLLMClient("k", "m", 10, proxyRefuses).complete("x"));
+        assertTrue(e.getMessage().contains("403"), e.getMessage());
+        AnthropicLLMClient.Transport emptyOk = (url, h, body) -> new AnthropicLLMClient.HttpResult(200, "");
+        assertThrows(LLMException.class, () -> new AnthropicLLMClient("k", "m", 10, emptyOk).complete("x"));
+    }
+
+    @Test
     void networkFailureBecomesLLMException() {
         FakeTransport t = new FakeTransport();
         t.failWith = new IOException("timed out");
