@@ -1,0 +1,4 @@
+# First-time buyer looking at condos
+Show me condos under 700k with at least 2 bedrooms and in-suite laundry.
+
+Which of those has the lowest price per square foot, and what does it give up?

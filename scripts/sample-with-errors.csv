@@ -1,0 +1,15 @@
+id,price,bedrooms,bathrooms,squareFeet,type,neighborhood,yearBuilt,features
+L001,1159000,0,1,1057,condo,Downtown,2003,balcony
+L002,807000,2,2,645,condo,Liberty Village,1996,parking
+L003,1921000,4,2,2408,house,Leslieville,2008,near transit
+L004,2026000,5,1,2730,house,The Annex,1997,backyard;central air;near school;pool
+L005,825000,2,1,894,condo,North York,2002,gym
+L006,1497000,5,2,2556,house,Scarborough,2023,near school;backyard;central air
+L007,1370000,4,2,2359,house,Etobicoke,1983,renovated kitchen;near transit;fireplace;garage
+L008,1130000,4,2,1422,townhouse,Vaughan,2020,fireplace;renovated kitchen;garage;near school
+L009,1019000,5,2,2067,house,Woodbridge,1969,pool
+L010,737000,2,1,651,condo,Richmond Hill,1997,in-suite laundry;balcony;rooftop terrace;pool
+X001,-250000,3,2,1400,house,Vaughan,1999,garage
+X002,650000,2,1,900,castle,Markham,2010,
+X003,720000,two,1,850,condo,Downtown,2015,balcony
+L003,999999,4,2,2408,house,Leslieville,1950,duplicate id

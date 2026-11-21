@@ -239,6 +239,31 @@ class CLIRendererTest {
     }
 
     @Test
+    void taskRunAnswersEachTurnAndReportsAiAvailability() {
+        llm.setResponse("Decide which tool", "{\"tool\": \"search\"}");
+        llm.setResponse("Extract home search criteria", "{\"minBedrooms\": 5}");
+        llm.setResponse("Explain these results", "Big family homes.");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        boolean answered = new CLIRenderer(service, new BufferedReader(new StringReader("")),
+                new PrintStream(out, true, StandardCharsets.UTF_8)).runTask(List.of("5 bedroom homes please"));
+        String text = out.toString(StandardCharsets.UTF_8);
+        assertTrue(answered);
+        assertTrue(text.contains("=== Task 1/1: 5 bedroom homes please"), text);
+        assertTrue(text.contains("Big family homes."));
+        assertTrue(text.contains("[tools: search]"));
+    }
+
+    @Test
+    void taskRunReportsWhenTheAiIsUnavailable() {
+        llm.setAvailable(false);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        boolean answered = new CLIRenderer(service, new BufferedReader(new StringReader("")),
+                new PrintStream(out, true, StandardCharsets.UTF_8)).runTask(List.of("a", "b"));
+        assertFalse(answered);
+        assertTrue(out.toString(StandardCharsets.UTF_8).contains("=== Task 2/2: b"));
+    }
+
+    @Test
     void persistenceWarningIsPrinted() throws Exception {
         Path notADir = Files.createTempFile("blocked", ".txt");
         notADir.toFile().deleteOnExit();

@@ -1,0 +1,2 @@
+# Error case: no listing satisfies everything; the agent should name the most restrictive requirement
+I need a 6 bedroom house in Liberty Village under 600k with a pool.

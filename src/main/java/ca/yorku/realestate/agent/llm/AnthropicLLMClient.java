@@ -86,6 +86,11 @@ public class AnthropicLLMClient implements LLMClient {
                 DEFAULT_MAX_TOKENS, jdkTransport(DEFAULT_TIMEOUT));
     }
 
+    /** The JDK HTTP transport with the default timeout. */
+    public static Transport defaultTransport() {
+        return jdkTransport(DEFAULT_TIMEOUT);
+    }
+
     static Transport jdkTransport(Duration timeout) {
         HttpClient http = HttpClient.newBuilder().connectTimeout(timeout).build();
         return (url, headers, body) -> {

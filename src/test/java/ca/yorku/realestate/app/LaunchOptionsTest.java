@@ -66,4 +66,54 @@ class LaunchOptionsTest {
         assertThrows(IllegalArgumentException.class,
                 () -> LaunchOptions.parse("--script", "a.txt", "-c", "show L020"));
     }
+
+    @Test
+    void standaloneTaskRunMatchesTheInstructorExample() {
+        LaunchOptions o = LaunchOptions.parse("-LLMAPI", "-input", "task.txt");
+        assertTrue(o.cli());
+        assertTrue(o.batch());
+        assertTrue(o.requireLlm());
+        assertEquals(new File("task.txt"), o.input().orElseThrow());
+    }
+
+    @Test
+    void optionsAcceptOneOrTwoDashesAndAnyCase() {
+        LaunchOptions o = LaunchOptions.parse("--llmapi", "anthropic", "--INPUT", "t.txt", "-Output", "out.txt",
+                "-model", "claude-x", "-cli");
+        assertTrue(o.requireLlm());
+        assertEquals(new File("t.txt"), o.input().orElseThrow());
+        assertEquals(new File("out.txt"), o.output().orElseThrow());
+        assertEquals("claude-x", o.model().orElseThrow());
+        assertTrue(LaunchOptions.parse("-script", "s.txt").script().isPresent());
+        assertTrue(LaunchOptions.parse("-help").help());
+    }
+
+    @Test
+    void unsupportedLlmProviderIsRejected() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> LaunchOptions.parse("-LLMAPI", "openai", "-input", "t.txt"));
+        assertTrue(e.getMessage().contains("anthropic"));
+    }
+
+    @Test
+    void onlyOneBatchModeAtATime() {
+        assertThrows(IllegalArgumentException.class,
+                () -> LaunchOptions.parse("-input", "t.txt", "-script", "s.txt"));
+        assertThrows(IllegalArgumentException.class,
+                () -> LaunchOptions.parse("-input", "t.txt", "-c", "show L020"));
+    }
+
+    @Test
+    void taskFileTurnsAreBlankLineSeparatedBlocks() {
+        List<String> turns = LaunchOptions.taskTurns(List.of(
+                "# my task",
+                "Find a 3 bedroom house",
+                "  under 1.5M with a garage.",
+                "",
+                "",
+                "Compare the top two.",
+                "# trailing comment"));
+        assertEquals(List.of("Find a 3 bedroom house under 1.5M with a garage.", "Compare the top two."), turns);
+        assertTrue(LaunchOptions.taskTurns(List.of("# only a comment", " ")).isEmpty());
+    }
 }

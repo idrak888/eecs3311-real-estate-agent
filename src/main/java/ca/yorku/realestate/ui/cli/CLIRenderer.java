@@ -101,6 +101,26 @@ public final class CLIRenderer implements SearchObserver {
     }
 
     /**
+     * Runs the agent on a natural-language task, one turn per entry (later turns can refer back to
+     * earlier ones, e.g. "compare the top two"). Prints each request and the agent's answer.
+     *
+     * @return true if the AI answered every turn; false if it was unavailable for any of them
+     */
+    public boolean runTask(List<String> turns) {
+        boolean allAnswered = true;
+        for (int i = 0; i < turns.size(); i++) {
+            String turn = turns.get(i);
+            out.println();
+            out.println("=== Task " + (i + 1) + "/" + turns.size() + ": " + turn);
+            AgentResponse r = service.askAgent(turn);
+            printAgent(r);
+            allAnswered &= r.isAiAvailable();
+        }
+        service.removeObserver(this);
+        return allAnswered;
+    }
+
+    /**
      * Runs one command line. Public so tests and scripted demos can drive the CLI. Blank lines and
      * lines starting with {@code #} (comments in command files) are ignored.
      */

@@ -135,3 +135,10 @@ Format: Original design -> Implemented change -> Reason -> Impact
   one-shot commands (`--command "..."`, repeatable); `CLIRenderer` gained `run(echoInput)` and
   `runCommands()` -> course requirement (Nov 20) that the CLI accept input from a file or
   standard input; also lets Stage 3 drive the agent non-interactively.
+- **Standalone CLI** (Nov 20, second announcement) -> runnable `Agent.jar` (maven-shade-plugin,
+  prebuilt copy in the repo root) with `-input task.txt` running the agent on a natural-language
+  task file (blank-line-separated turns, `CLIRenderer.runTask`), `-LLMAPI` to require the API
+  (exit 3 without a key), `-model`, `-output` transcript, `-help`; options accept one or two dashes.
+  Exit codes 0/1/2/3. An unsupported `-data` file now exits with a message instead of a stack trace.
+  -> course requirement: "java -jar Agent.jar -LLMAPI -input task.txt should run the agent on the
+  task specified in task.txt".

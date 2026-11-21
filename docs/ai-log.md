@@ -12,7 +12,7 @@ Running log for report Section 5. Add a row per session.
 | 2026-11-04 | Claude (claude.ai) | Claude Opus 5.5 | F02/F10: MemoryManager; tool framework + SearchTool/MortgageTool; F08: ComparisonTool; AdvisorAgent (LLM tool selection, grounding check, regeneration); facade askAgent/compare; soft-preference fix; tests | | |
 | 2026-11-05 | Claude (claude.ai) | Claude Opus 5.5 | CLI (CLIRenderer, Main); Swing GUI (MainWindow, CriteriaPanel, ChatPanel, ShortlistPanel, detail/comparison/profile dialogs); rendered screenshots to check layout; tests | | |
 | 2026-11-06 | Claude (claude.ai) | Claude Opus 5.5 | F02/F03 error flows: ZeroMatchAnalyzer (most restrictive criterion) in tool, agent, CLI, GUI; LLM retry on temporary failures; live AI status; tests | | |
-| 2026-11-20 | Claude (claude.ai) | Claude Opus 5.5 | CLI input from file, stdin and one-shot commands (LaunchOptions, CLIRenderer); report screenshots; tests | | |
+| 2026-11-20 | Claude (claude.ai) | Claude Opus 5.5 | CLI input from file, stdin and one-shot commands; standalone Agent.jar with -LLMAPI -input task files (LaunchOptions, CLIRenderer.runTask, Main); per-feature report documentation with screenshots; tests | | |
 
 ## Representative interactions
 
@@ -48,3 +48,8 @@ Running log for report Section 5. Add a row per session.
   (options parsed in a separate, tested `LaunchOptions` class; file mode echoes commands but the
   keyboard mode does not, so Eclipse's console is not doubled). Ran the sample command file end
   to end before committing.
+- 2026-11-20: A second announcement asked for `java -jar Agent.jar -LLMAPI -input task.txt`, where
+  task.txt is a task for the agent rather than CLI commands. Decided task files hold natural-language
+  requests (one per blank-line-separated block, so follow-ups like "compare the top two" work) and
+  kept command files as `-script`. Running the jar against a `.xml` data file exposed an uncaught
+  UnsupportedFormatException stack trace at startup; fixed to print the message and exit with code 2.

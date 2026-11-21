@@ -1,0 +1,10 @@
+# Sample task for: java -jar Agent.jar -LLMAPI -input task.txt
+# Each block of text (separated by a blank line) is one request to the agent.
+# Later requests can refer to earlier answers.
+
+I'm looking for a 3 bedroom house under $1.5M with a garage,
+maybe in Vaughan or Woodbridge.
+
+Compare the top two results for me.
+
+What would the monthly payment be on the first one with $200k down at 4.8% over 25 years?

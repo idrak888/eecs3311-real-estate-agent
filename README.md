@@ -70,29 +70,65 @@ mvn compile exec:java                      # GUI
 mvn compile exec:java -Dexec.args="--cli"  # CLI
 ```
 
-### CLI input methods
+## Standalone CLI (`java -jar Agent.jar`)
 
-The CLI reads commands from any of these sources:
+The agent runs directly from a terminal as a single runnable jar. A prebuilt `Agent.jar` is in
+the repository root; to rebuild it from source run `mvn package` (or `mvn package -DskipTests`),
+which writes `target/Agent.jar`.
 
-| Source | Command |
+**Working example** (from the repository root, with `LLM_API_KEY` set in `.env` or the
+environment):
+
+```bash
+java -jar Agent.jar -LLMAPI -input task.txt
+```
+
+This runs the agent on the natural-language task in [`task.txt`](task.txt): a 3 bedroom house
+search with a hedged area preference, then "compare the top two", then a mortgage question about
+the first result. Each block of text separated by a blank line is one request, and later requests
+can refer to earlier answers. The agent prints each request, its answer, the tools it used and
+the tokens consumed. More tasks are in [`tasks/`](tasks/) (`tasks/impossible-request.txt` shows
+the no-match error case).
+
+### Options
+
+Options take one or two dashes and are case-insensitive (`-LLMAPI`, `--llmapi`).
+
+| Option | Meaning |
 |---|---|
-| Keyboard (interactive) | `mvn compile exec:java -Dexec.args="--cli"` |
-| Standard input (pipe or redirect) | `mvn -q compile exec:java -Dexec.args="--cli" < scripts/demo-commands.txt` |
-| Command file (echoes each command) | `mvn -q compile exec:java -Dexec.args="--script scripts/demo-commands.txt"` |
-| One-shot command(s), then exit | `mvn -q compile exec:java -Dexec.args="-c 'show L020' -c 'afford L020'"` |
+| *(none)* | start the GUI |
+| `-input FILE` | run the agent on the natural-language task in FILE, print the answers, exit |
+| `-LLMAPI [anthropic]` | require the LLM API; exits with code 3 if no API key is configured |
+| `-model NAME` | LLM model (default: `LLM_MODEL` from `.env`, else `claude-sonnet-5-5`) |
+| `-output FILE` | also save the transcript to FILE |
+| `-cli` | interactive CLI reading commands from standard input (keyboard, pipe or redirect) |
+| `-script FILE`, `-f FILE` | run CLI commands (see below) from FILE and exit; each command is echoed |
+| `-c "COMMAND"` | run one CLI command and exit; repeatable |
+| `-data FILE` | load listings from a `.json` or `.csv` file instead of the bundled data |
+| `-help` | list the options |
 
-`--script` (or `-f`) and `--command` (or `-c`, repeatable) imply `--cli`. In a command file,
-blank lines and lines starting with `#` are ignored. `scripts/demo-commands.txt` exercises
-F02 to F10, including error cases. `--data path/to/listings.csv` loads a different listing
-file in any mode. From Eclipse, put the same options under Run Configurations > Arguments.
+Exit codes: 0 success, 1 the AI could not answer a task request (for example a network error),
+2 bad arguments or an unreadable file, 3 `-LLMAPI` with no API key.
 
-Programs can also call the agent directly through the `RealEstateService` facade
-(`askAgent`, `search`, `compare`, `calculateMortgage`, ...), which is what the GUI and CLI use.
+More examples:
+
+```bash
+java -jar Agent.jar -LLMAPI -input tasks/condo-first-home.txt -output run.txt
+java -jar Agent.jar -script scripts/demo-commands.txt          # CLI commands from a file
+java -jar Agent.jar -cli < scripts/demo-commands.txt            # same, through standard input
+java -jar Agent.jar -c "show L020" -c "mortgage L020 --down 150k --rate 4.8 --years 25"
+java -jar Agent.jar -data scripts/sample-with-errors.csv -c "search"   # import with rejected rows
+```
+
+The same options work with Maven (`mvn -q compile exec:java -Dexec.args="-input task.txt"`)
+and in Eclipse (Run Configurations > Arguments). Programs can also call the agent directly through
+the `RealEstateService` facade (`askAgent`, `search`, `compare`, `calculateMortgage`), which is
+what the GUI and CLI use.
 
 Without an API key, everything works except the chat/`ask` command, which reports that the
 assistant is unavailable.
 
-### GUI
+## GUI layout
 
 - **Left:** structured search criteria and ranking. The panel also fills in automatically when
   the advisor interprets a chat message.
@@ -100,7 +136,7 @@ assistant is unavailable.
 - **Right:** shortlist. Select 2-4 and press Compare. Edit > Undo reverses shortlist changes.
 - **Profile > Financial profile...** sets income, monthly debt and down payment for affordability.
 
-### CLI
+## CLI commands
 
 ```
 search --max-price 900k --beds 3 --type house --area Vaughan --feature garage --sort value
