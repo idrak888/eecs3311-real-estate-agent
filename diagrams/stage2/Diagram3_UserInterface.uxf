@@ -353,13 +353,16 @@ fontsize=12</panel_attributes>
       <x>1240</x>
       <y>220</y>
       <w>380</w>
-      <h>170</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>CLIRenderer
 --
 -service: RealEstateService
 --
 +run(): void
++run(echoInput: boolean): void
++runCommands(List&lt;String&gt;): void
++runTask(turns: List&lt;String&gt;): boolean
 +execute(String): void
 +renderResults(List&lt;Listing&gt;): void
 ~tokenize(String): List&lt;String&gt;
@@ -415,14 +418,14 @@ fontsize=12</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1330</x>
-      <y>380</y>
+      <y>440</y>
       <w>20</w>
-      <h>130</h>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 uses
 fontsize=12</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
@@ -456,5 +459,102 @@ MainWindow and CLIRenderer only)
 bg=#d9ead3
 fontsize=12</panel_attributes>
     <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1660</x>
+      <y>40</y>
+      <w>300</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Main
+--
++main(String[]): void
+-runCli(...): int  {exit code 0/1/2/3}
++createService(): RealEstateService
+~bundledListings(): File
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1660</x>
+      <y>220</y>
+      <w>300</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;record&gt;&gt;
+LaunchOptions
+--
+cli, requireLlm, help: boolean
+data, script, input, output: Optional&lt;File&gt;
+commands: List&lt;String&gt;
+model: Optional&lt;String&gt;
+--
++parse(String...): LaunchOptions
++batch(): boolean
++taskTurns(List&lt;String&gt;): List&lt;String&gt;
+options: -input -LLMAPI -model -output
+  -cli -script -c -data -help
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1660</x>
+      <y>520</y>
+      <w>280</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>TeeOutputStream
+--
+copies console output to the -output file
+bg=#d9ead3
+fontsize=12</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1790</x>
+      <y>140</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+parses
+fontsize=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1610</x>
+      <y>90</y>
+      <w>70</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+creates
+fontsize=12</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1930</x>
+      <y>90</y>
+      <w>80</w>
+      <h>500</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+uses
+fontsize=12</panel_attributes>
+    <additional_attributes>30.0;10.0;70.0;10.0;70.0;470.0;10.0;470.0</additional_attributes>
   </element>
 </diagram>

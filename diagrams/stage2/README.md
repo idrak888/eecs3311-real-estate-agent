@@ -10,7 +10,7 @@ Classes shaded green were added or substantially changed in Stage 2.
 | Diagram1c_CommandsFinancial.uxf | Diagram1c | `changedState()`, undo returns what it undid; calculator thresholds and `calculate()`; richer `AffordabilityResult` |
 | Diagram2a_AgentCore.uxf | Diagram2a | Tool decision, `ExtractedRequest` (requirements + preferences), memory preferences/last results, `Transport`, `EnvConfig`, retries |
 | Diagram2b_AgentTools.uxf | Diagram2b | Typed `ToolRequest`, tool parameters/data keys, `ComparisonTool` uses `MortgageCalculator`, diagnosis on empty search |
-| Diagram3_UserInterface.uxf | (new) | GUI panels and dialogs, `CLIRenderer`, shared `Formats` |
+| Diagram3_UserInterface.uxf | (new) | GUI panels and dialogs, `CLIRenderer` (including file, one-shot and task-file modes), shared `Formats`; `Main`, `LaunchOptions` and `TeeOutputStream` for the standalone CLI (Nov 20) |
 | SD02_NLSearchInterpretation.uxf | SD02 | Model-driven tool selection, requirements vs preferences, clarifying question, observer update |
 | SD03_SearchToolExecution.uxf | SD03 | Ranking inside the tool; `ZeroMatchAnalyzer` when nothing matches |
 
